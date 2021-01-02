@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <resources>
   <string name="app_name">ftmr</string>
+    <string name="alert_channel_name">Timer alert</string>
+  <string name="alert_channel_description">Sends a notifications when the timer ends</string>
 </resources>

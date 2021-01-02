@@ -5,10 +5,8 @@ import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 export default function App() {
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.body}>
-                Open up App.tsx asdasdto star st working on your app!
-            </Text>
-            <StatusBar style="auto" />
+            <Text style={styles.body}>00:00</Text>
+            <StatusBar style="light" backgroundColor="black" />
         </SafeAreaView>
     );
 }
@@ -16,12 +14,12 @@ export default function App() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#000",
+        backgroundColor: "black",
         alignItems: "center",
         justifyContent: "center",
     },
     body: {
-        fontSize: 16,
+        fontSize: 32,
         color: "#eee",
     },
 });

@@ -1,15 +1,8 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
-import {
-    Button,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    NativeModules,
-} from "react-native";
-import { formatEpoch, currentTimeMilies } from "./js/TimeUtils";
-
-const { FtmrNotificationModule } = NativeModules;
+import { StatusBar } from "expo-status-bar";
+import { Button, SafeAreaView, StyleSheet, Text } from "react-native";
+import { formatEpoch, currentTimeMilies } from "./js/utils/TimeUtils";
+import { sendNotification } from "./js/utils/NotificationUtils";
 
 interface MainScreenState {
     currentTime: number;
@@ -26,10 +19,6 @@ export default class App extends React.Component {
         currentTime: this.duration,
     };
 
-    sendNotification = () => {
-        FtmrNotificationModule.showNotification("Ftmr", "Times up!");
-    };
-
     startTimer = () => {
         this.startTime = currentTimeMilies();
         this.setState({ currentTime: this.duration });
@@ -39,7 +28,7 @@ export default class App extends React.Component {
         this.intervalId = setInterval(() => {
             this.setState({ currentTime: this.state.currentTime - 1000 });
             if (currentTimeMilies() > this.startTime + this.duration) {
-                this.sendNotification();
+                sendNotification();
                 clearInterval(this.intervalId);
             }
         }, 1000);

@@ -1,46 +1,37 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { Button, SafeAreaView, StyleSheet, Text } from "react-native";
-import { formatEpoch, currentTimeMilies } from "./js/utils/TimeUtils";
 import { sendNotification } from "./js/utils/NotificationUtils";
+import { CountDownTimer, TimerAction } from "./js/components/CountDownTimer";
 
-interface MainScreenState {
-    currentTime: number;
+interface State {
+    timerAction: TimerAction
 }
 
-interface MainScreenProps {}
+interface Props {}
 
-export default class App extends React.Component {
-    intervalId: any;
-    startTime = -1;
-    duration = 5000;
+export default class App extends React.Component<Props, State> {
 
-    state = {
-        currentTime: this.duration,
+    constructor(props: Props) {
+        super(props)
+        this.state = {
+            timerAction: TimerAction.Free,
+        }
+    }
+
+    onTimerFinished = () => {
+        sendNotification()  
     };
 
     startTimer = () => {
-        this.startTime = currentTimeMilies();
-        this.setState({ currentTime: this.duration });
-
-        clearInterval(this.intervalId);
-
-        this.intervalId = setInterval(() => {
-            this.setState({ currentTime: this.state.currentTime - 1000 });
-            if (currentTimeMilies() > this.startTime + this.duration) {
-                sendNotification();
-                clearInterval(this.intervalId);
-            }
-        }, 1000);
-    };
+        this.setState({timerAction: TimerAction.Start})
+    }
 
     render = () => (
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" backgroundColor="black" />
 
-            <Text style={styles.body}>
-                {formatEpoch(this.state.currentTime)}
-            </Text>
+            <CountDownTimer action={this.state.timerAction} onTimerFinished={this.onTimerFinished} />
 
             <Button
                 title="Send Notification"
@@ -58,12 +49,5 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "flex-end",
         paddingBottom: 64,
-    },
-    body: {
-        textAlignVertical: "center",
-        flex: 1,
-        padding: 32,
-        fontSize: 64,
-        color: "#eee",
     },
 });

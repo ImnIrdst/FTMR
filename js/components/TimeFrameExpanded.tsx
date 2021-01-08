@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 interface Props {}
 
@@ -13,13 +13,24 @@ export class TimeFrameExpanded extends React.Component<Props> {
 
     tagsFormatted = () => this.tags.join(", ");
 
-    render = () => <Text style={styles.body}>{this.tagsFormatted()}</Text>;
+    render = () => (
+        <View style={styles.container}>
+            <Text style={styles.body}>{this.tagsFormatted()}</Text>
+            <Text style={styles.body}>{this.tagsFormatted()}</Text>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-    body: {
-        textAlignVertical: "center",
+    container: {
+        backgroundColor: "red",
         flex: 1,
+        alignItems: "flex-start",
+    },
+    body: {
+        margin:   2,
+        textAlignVertical: "center",
+        backgroundColor: "green",
         padding: 32,
         fontSize: 32,
         color: "#eee",

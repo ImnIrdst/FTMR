@@ -18,7 +18,7 @@ export class CountDownTimer extends React.Component<Props> {
     startTimer = () => {
         this.startTime = currentTimeMilies();
         this.setState({ currentTime: this.duration });
- 
+
         clearInterval(this.interval);
 
         this.interval = setInterval(() => {
@@ -40,7 +40,7 @@ export class CountDownTimer extends React.Component<Props> {
     };
 
     render = () => (
-        <View>
+        <View style={styles.container}>
             <Text style={styles.body}>
                 {formatEpoch(this.state.currentTime)}
             </Text>
@@ -54,6 +54,10 @@ export class CountDownTimer extends React.Component<Props> {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "blue",
+    },
     body: {
         textAlignVertical: "center",
         flex: 1,

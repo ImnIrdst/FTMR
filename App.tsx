@@ -1,4 +1,5 @@
 import React from "react";
+import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
 import { Button, SafeAreaView, StyleSheet, Text } from "react-native";
 import { sendNotification } from "./js/utils/NotificationUtils";
@@ -7,7 +8,7 @@ import { TimeFrameExpanded } from "./js/components/TimeFrameExpanded";
 
 interface Props {}
 
-export default class App extends React.Component<Props, State> {
+export default class App extends React.Component<Props> {
     constructor(props: Props) {
         super(props);
     }
@@ -15,16 +16,14 @@ export default class App extends React.Component<Props, State> {
     onTimerFinished = () => {
         sendNotification();
     };
-    
+
     render = () => (
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" backgroundColor="black" />
 
             <TimeFrameExpanded />
 
-            <CountDownTimer
-                onTimerFinished={this.onTimerFinished}
-            />
+            <CountDownTimer onTimerFinished={this.onTimerFinished} />
         </SafeAreaView>
     );
 }
@@ -36,5 +35,6 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "flex-end",
         paddingBottom: 64,
+        marginTop: Constants.statusBarHeight,
     },
 });

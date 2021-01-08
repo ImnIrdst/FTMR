@@ -13,7 +13,7 @@ export enum TimerAction {
 }
 
 export class CountDownTimer extends React.Component<Props> {
-    intervalId: any;
+    interval: any;
     startTime = -1;
     duration = 5000;
 
@@ -33,15 +33,24 @@ export class CountDownTimer extends React.Component<Props> {
         this.startTime = currentTimeMilies();
         this.setState({ currentTime: this.duration });
 
-        clearInterval(this.intervalId);
+        clearInterval(this.interval);
 
-        this.intervalId = setInterval(() => {
+        this.interval = setInterval(() => {
             this.setState({ currentTime: this.state.currentTime - 1000 });
             if (currentTimeMilies() > this.startTime + this.duration) {
-                this.props.onTimerFinished();
-                clearInterval(this.intervalId);
+                this.clearTimer();
             }
         }, 1000);
+    };
+
+    componentWillUnmount = () => {
+        this.clearTimer();
+    };
+
+    clearTimer = () => {
+        this.setState({ currentTime: this.duration });
+        this.props.onTimerFinished();
+        clearInterval(this.interval);
     };
 
     render = () => (

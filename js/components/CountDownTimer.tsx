@@ -1,15 +1,9 @@
 import React from "react";
-import { StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import { formatEpoch, currentTimeMilies } from "../utils/TimeUtils";
 
 interface Props {
     onTimerFinished: () => void;
-    action: TimerAction;
-}
-
-export enum TimerAction {
-    Free,
-    Start,
 }
 
 export class CountDownTimer extends React.Component<Props> {
@@ -20,14 +14,6 @@ export class CountDownTimer extends React.Component<Props> {
     state = {
         currentTime: this.duration,
     };
-
-    componentDidUpdate(prevProps: Props) {
-        if (this.props !== prevProps) {
-            if (this.props.action === TimerAction.Start) {
-                this.startTimer();
-            }
-        }
-    }
 
     startTimer = () => {
         this.startTime = currentTimeMilies();
@@ -54,7 +40,16 @@ export class CountDownTimer extends React.Component<Props> {
     };
 
     render = () => (
-        <Text style={styles.body}>{formatEpoch(this.state.currentTime)}</Text>
+        <View>
+            <Text style={styles.body}>
+                {formatEpoch(this.state.currentTime)}
+            </Text>
+            <Button
+                title="Start Timer"
+                onPress={this.startTimer}
+                color="darkorange"
+            />
+        </View>
     );
 }
 

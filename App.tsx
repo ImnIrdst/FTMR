@@ -3,6 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { Button, SafeAreaView, StyleSheet, Text } from "react-native";
 import { sendNotification } from "./js/utils/NotificationUtils";
 import { CountDownTimer, TimerAction } from "./js/components/CountDownTimer";
+import { TimeFrameExpanded } from "./js/components/TimeFrameExpanded";
 
 interface State {
     timerAction: TimerAction
@@ -11,30 +12,34 @@ interface State {
 interface Props {}
 
 export default class App extends React.Component<Props, State> {
-
     constructor(props: Props) {
-        super(props)
+        super(props);
         this.state = {
             timerAction: TimerAction.Free,
-        }
+        };
     }
 
     onTimerFinished = () => {
-        sendNotification()  
+        sendNotification();
     };
 
     startTimer = () => {
-        this.setState({timerAction: TimerAction.Start})
-    }
+        this.setState({ timerAction: TimerAction.Start });
+    };
 
     render = () => (
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" backgroundColor="black" />
 
-            <CountDownTimer action={this.state.timerAction} onTimerFinished={this.onTimerFinished} />
+            <TimeFrameExpanded />
+
+            <CountDownTimer
+                action={this.state.timerAction}
+                onTimerFinished={this.onTimerFinished}
+            />
 
             <Button
-                title="Send Notification"
+                title="Start Timer"
                 onPress={this.startTimer}
                 color="darkorange"
             />

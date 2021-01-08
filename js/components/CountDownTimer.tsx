@@ -18,13 +18,14 @@ export class CountDownTimer extends React.Component<Props> {
     startTimer = () => {
         this.startTime = currentTimeMilies();
         this.setState({ currentTime: this.duration });
-
+ 
         clearInterval(this.interval);
 
         this.interval = setInterval(() => {
             this.setState({ currentTime: this.state.currentTime - 1000 });
             if (currentTimeMilies() > this.startTime + this.duration) {
                 this.clearTimer();
+                this.props.onTimerFinished();
             }
         }, 1000);
     };
@@ -35,7 +36,6 @@ export class CountDownTimer extends React.Component<Props> {
 
     clearTimer = () => {
         this.setState({ currentTime: this.duration });
-        this.props.onTimerFinished();
         clearInterval(this.interval);
     };
 

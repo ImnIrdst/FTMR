@@ -56,10 +56,14 @@ export class CountDownTimer extends React.Component<Props> {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        alignSelf: "stretch",
         backgroundColor: "blue",
+        alignContent: "center",
+        paddingBottom: 64,
     },
     body: {
         textAlignVertical: "center",
+        textAlign: "center",
         flex: 1,
         padding: 32,
         fontSize: 64,

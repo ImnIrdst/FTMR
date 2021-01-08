@@ -33,8 +33,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "black",
         alignItems: "center",
-        justifyContent: "flex-end",
-        paddingBottom: 64,
+        justifyContent: "flex-start",
         marginTop: Constants.statusBarHeight,
     },
 });

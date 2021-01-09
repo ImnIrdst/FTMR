@@ -1,22 +1,20 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
 import { TimeFrameData } from "./TimeFrameData";
 
-interface Props {
-    data: TimeFrameData;
-}
-
+interface Props extends TimeFrameData {}
 export class TimeFrameItemUI extends React.Component<Props> {
-    getTags = () => this.props.data.tags.join(", ");
-    getTodos = () => this.props.data.todos;
+    getTags = () => this.props.tags.join(", ");
+    getTodos = () => this.props.todos;
 
     render = () => (
         <View style={styles.container}>
             <Text style={styles.title}>{this.getTags()}</Text>
-            {this.getTodos().map((todo) => {
-                return <Text style={styles.body}>{todo}</Text>;
-            })}
+            {this.getTodos().map((todo) => (
+                <Text key={todo.key} style={styles.body}>
+                    {todo.text}
+                </Text>
+            ))}
         </View>
     );
 }

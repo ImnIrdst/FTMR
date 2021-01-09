@@ -7,9 +7,7 @@ import { CountDownTimer } from "./js/components/timer/CountDownTimer";
 import { TimeFrameListUI } from "./js/components/timeframe/TimeFrameListUI";
 import { mockTimeFrames } from "./js/mock/MockTimeFrames";
 
-interface Props {}
-
-export default class App extends React.Component<Props> {
+export default class App extends React.Component  {
     onTimerFinished = () => {
         sendNotification();
     };
@@ -17,8 +15,8 @@ export default class App extends React.Component<Props> {
     render = () => (
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" backgroundColor="black" />
-
-            <TimeFrameListUI timeFrames={mockTimeFrames} />
+            
+            <TimeFrameListUI timeFrames={mockTimeFrames}/>
 
             <CountDownTimer onTimerFinished={this.onTimerFinished} />
         </SafeAreaView>

@@ -7,7 +7,7 @@ interface Props {
     data: TimeFrameData;
 }
 
-export class TimeFrameUI extends React.Component<Props> {
+export class TimeFrameItemUI extends React.Component<Props> {
     getTags = () => this.props.data.tags.join(", ");
     getTodos = () => this.props.data.todos;
 

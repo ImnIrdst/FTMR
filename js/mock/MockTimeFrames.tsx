@@ -10,4 +10,9 @@ const timeFrame: TimeFrameData = {
     ],
 };
 
-export const mockTimeFrames: TimeFrameData[] = [timeFrame, timeFrame];
+export const mockTimeFrames: TimeFrameData[] = [
+    timeFrame,
+    timeFrame,
+    timeFrame,
+    timeFrame,
+];

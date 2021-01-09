@@ -9,10 +9,6 @@ import { TimeFrameExpanded } from "./js/components/TimeFrameExpanded";
 interface Props {}
 
 export default class App extends React.Component<Props> {
-    constructor(props: Props) {
-        super(props);
-    }
-
     onTimerFinished = () => {
         sendNotification();
     };

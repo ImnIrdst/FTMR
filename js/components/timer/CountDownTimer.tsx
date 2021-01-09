@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
-import { formatEpoch, currentTimeMilies } from "../utils/TimeUtils";
+import { formatEpoch, currentTimeMilies } from "../../utils/TimeUtils";
 
 interface Props {
     onTimerFinished: () => void;

@@ -3,7 +3,9 @@ import { TimeFrameData, Todo } from "../components/timeframe/TimeFrameData";
 const todos: Todo[] = []
 
 let _ = [
-    "- Add time frame text",
+    "- change timer play icon state to repeat",
+    "- Add time frame text (9:00, 9:30, ...)",
+    "- Add increase and decrease timer duration",
     "- Add todos and checkboxes",
     "- Add cross line on done todos",
     "- Add buttons for sound profile",

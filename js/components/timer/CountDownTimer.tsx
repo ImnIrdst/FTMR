@@ -1,8 +1,9 @@
 import React from "react";
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, ViewStyle } from "react-native";
 import { formatEpoch, currentTimeMilies } from "../../utils/TimeUtils";
 
 interface Props {
+    style: ViewStyle;
     onTimerFinished: () => void;
 }
 
@@ -40,7 +41,7 @@ export class CountDownTimer extends React.Component<Props> {
     };
 
     render = () => (
-        <View style={styles.container}>
+        <View style={this.props.style}>
             <Text style={styles.body}>
                 {formatEpoch(this.state.currentTime)}
             </Text>
@@ -54,13 +55,6 @@ export class CountDownTimer extends React.Component<Props> {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignSelf: "stretch",
-        backgroundColor: "blue",
-        alignContent: "center",
-        paddingBottom: 64,
-    },
     body: {
         textAlignVertical: "center",
         textAlign: "center",

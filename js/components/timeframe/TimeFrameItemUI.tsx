@@ -1,14 +1,16 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ViewStyle } from "react-native";
 import { TimeFrameData } from "./TimeFrameData";
 
-interface Props extends TimeFrameData {}
+interface Props extends TimeFrameData {
+    style: ViewStyle;
+}
 export class TimeFrameItemUI extends React.Component<Props> {
     getTags = () => this.props.tags.join(", ");
     getTodos = () => this.props.todos;
 
     render = () => (
-        <View style={styles.container}>
+        <View style={this.props.style}>
             <Text style={styles.title}>{this.getTags()}</Text>
             {this.getTodos().map((todo) => (
                 <Text key={todo.key} style={styles.body}>
@@ -20,12 +22,6 @@ export class TimeFrameItemUI extends React.Component<Props> {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        alignSelf: "stretch",
-        backgroundColor: "red",
-        flex: 1,
-        alignItems: "flex-start",
-    },
     title: {
         alignSelf: "stretch",
         flex: 1,

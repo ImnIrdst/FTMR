@@ -1,29 +1,31 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, ViewStyle } from "react-native";
 import { TimeFrameItemUI } from "./TimeFrameItemUI";
 import { ScrollView } from "react-native-gesture-handler";
 import { TimeFrameData } from "./TimeFrameData";
 
 interface Props {
+    style: ViewStyle;
     timeFrames: TimeFrameData[];
 }
 
 export class TimeFrameListUI extends React.Component<Props> {
-    
     getTimeFrames = () => this.props.timeFrames;
-    
+
     render = () => (
-        <ScrollView style={styles.fillWidth}>
+        <ScrollView style={this.props.style}>
             {this.getTimeFrames().map((timeFrame) => (
-                <TimeFrameItemUI {...timeFrame} />
+                <TimeFrameItemUI style={styles.itemContainer} {...timeFrame} />
             ))}
         </ScrollView>
     );
 }
 
 const styles = StyleSheet.create({
-    fillWidth: {
-        flex: 1,
+    itemContainer: {
         alignSelf: "stretch",
+        backgroundColor: "red",
+        flex: 1,
+        alignItems: "flex-start",
     },
 });

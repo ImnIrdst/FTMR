@@ -6,6 +6,7 @@ import { sendNotification } from "./js/utils/NotificationUtils";
 import { CountDownTimer } from "./js/components/timer/CountDownTimer";
 import { TimeFrameListUI } from "./js/components/timeframe/TimeFrameListUI";
 import { mockTimeFrames } from "./js/mock/MockTimeFrames";
+import { Colors } from "react-native-paper";
 
 export default class App extends React.Component {
     componentDidMount = () => {
@@ -42,14 +43,14 @@ const styles = StyleSheet.create({
         marginTop: Constants.statusBarHeight,
     },
     todosContainer: {
-        flex: 4,
+        flex: 5,
         alignSelf: "stretch",
     },
     timerContainer: {
-        flex: 1,
+        flex: 2,
+        borderRadius: 32,
         alignSelf: "stretch",
-        backgroundColor: "blue",
+        backgroundColor: Colors.grey800,
         alignContent: "center",
-        paddingBottom: 32,
     },
 });

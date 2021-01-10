@@ -1,5 +1,7 @@
+import { transform } from "@babel/core";
 import React from "react";
 import { StyleSheet, Text, View, Button, ViewStyle } from "react-native";
+import { Colors, IconButton } from "react-native-paper";
 import { formatEpoch, currentTimeMilies } from "../../utils/TimeUtils";
 
 interface Props {
@@ -45,10 +47,14 @@ export class CountDownTimer extends React.Component<Props> {
             <Text style={styles.body}>
                 {formatEpoch(this.state.currentTime)}
             </Text>
-            <Button
-                title="Start Timer"
+            <IconButton
+                icon={"play"}
                 onPress={this.startTimer}
-                color="darkorange"
+                size={42}
+                color={Colors.grey900}
+                style={styles.button}
+                accessibilityTraits={"TODO"}
+                accessibilityComponentType={"TODO"}
             />
         </View>
     );
@@ -59,8 +65,17 @@ const styles = StyleSheet.create({
         textAlignVertical: "center",
         textAlign: "center",
         flex: 1,
-        padding: 32,
+        padding: 16,
+        transform: [{   scaleY: 1.2   }],
         fontSize: 64,
+        fontWeight: "normal",
         color: "#eee",
+    },
+    button: {
+        alignSelf: "center",
+        backgroundColor: "orange",
+        marginTop: 0,
+        marginHorizontal: 16,
+        marginBottom: 32,
     },
 });

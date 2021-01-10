@@ -3,12 +3,13 @@ import { TimeFrameData, Todo } from "../components/timeframe/TimeFrameData";
 const todos: Todo[] = []
 
 let _ = [
+    "- Add time frame text",
     "- Add todos and checkboxes",
     "- Add cross line on done todos",
     "- Add buttons for sound profile",
     "- Add tag manager screen",
 ].forEach((element, index) => {
-    todos.push({key: index, text: element} as Todo)
+    todos.push({ key: index, text: element } as Todo);
 });
 
 const timeFrameWithoutId = {
@@ -18,7 +19,7 @@ const timeFrameWithoutId = {
 
 export const mockTimeFrames: TimeFrameData[] = []
 
-for(let i=0; i<3; i++) {
-    mockTimeFrames.push(({ key: i, ...timeFrameWithoutId } as TimeFrameData))
+for (let i = 0; i < 5; i++) {
+    mockTimeFrames.push({ key: i, ...timeFrameWithoutId } as TimeFrameData);
 }
 

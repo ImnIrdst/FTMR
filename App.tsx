@@ -1,7 +1,7 @@
 import React from "react";
 import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, StyleProp } from "react-native";
+import { SafeAreaView, StyleSheet, StyleProp, View } from "react-native";
 import { sendNotification } from "./js/utils/NotificationUtils";
 import { CountDownTimer } from "./js/components/timer/CountDownTimer";
 import { TimeFrameListUI } from "./js/components/timeframe/TimeFrameListUI";
@@ -21,7 +21,7 @@ export default class App extends React.Component {
             <StatusBar style="light" backgroundColor="black" />
 
             <TimeFrameListUI
-                style={styles.fillWidth}
+                style={styles.todosContainer}
                 timeFrames={mockTimeFrames}
             />
 
@@ -34,10 +34,6 @@ export default class App extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    fillWidth: {
-        flex: 1,
-        alignSelf: "stretch",
-    },
     container: {
         flex: 1,
         backgroundColor: "black",
@@ -45,11 +41,15 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         marginTop: Constants.statusBarHeight,
     },
+    todosContainer: {
+        flex: 4,
+        alignSelf: "stretch",
+    },
     timerContainer: {
         flex: 1,
         alignSelf: "stretch",
         backgroundColor: "blue",
         alignContent: "center",
-        paddingBottom: 64,
+        paddingBottom: 32,
     },
 });

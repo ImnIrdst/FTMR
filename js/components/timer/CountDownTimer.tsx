@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         flex: 1,
         padding: 16,
-        transform: [{   scaleY: 1.2   }],
+        transform: [{ scaleY: 1.1 }],
         fontSize: 64,
         fontWeight: "normal",
         color: "#eee",

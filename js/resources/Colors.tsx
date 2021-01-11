@@ -1,4 +1,9 @@
+import { Colors as MaterialColors } from "react-native-paper";
+
 export const Colors = {
-    gray800: "#424242",
-    gray900: "#212121",
+    primaryColor: MaterialColors.orange500,
+    background: "black",
+    backgroundLight: MaterialColors.grey900,
+    backgroundLighter: MaterialColors.grey800,
+    textColor: MaterialColors.grey100,
 };

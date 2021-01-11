@@ -13,7 +13,7 @@ export class TodoUI extends React.Component<Props> {
     getTodoStateStyle = () => (this.props.todo.isChecked ? styles.isDone : styles.isUnDone);
 
     render = () => (
-        <View key={this.getKey()} style={this.props.style}>
+        <View style={this.props.style}>
             <Text style={[styles.todo, this.getTodoStateStyle()]}>{this.getText()}</Text>
         </View>
     );

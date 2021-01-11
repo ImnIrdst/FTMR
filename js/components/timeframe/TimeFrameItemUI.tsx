@@ -15,15 +15,15 @@ export class TimeFrameItemUI extends React.Component<Props> {
     doNothing = () => {};
 
     // Todo extract this
-    getTodoStateStyle = () => {
-        
-    }
+    getTodoStateStyle = () => {};
 
     render = () => (
         <View style={this.props.style}>
             <Text style={styles.title}>{this.getTags()}</Text>
             <Text style={styles.timeRange}>{this.getTimeRange()}</Text>
-            {this.getTodos().map((todo) => <TodoUI style={styles.todo} todo={todo}  />)}
+            {this.getTodos().map((todo) => (
+                <TodoUI key={todo.key} style={styles.todo} todo={todo} />
+            ))}
             <View style={styles.buttonsContainer}>
                 <ToggleButtonUI style={styles.button} icon={"alarm"} onToggle={this.doNothing} />
                 <ToggleButtonUI style={styles.button} icon={"bell-outline"} onToggle={this.doNothing} />
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlignVertical: "center",
         margin: 8,
-        fontSize: 32,
+        fontSize: 24,
         color: "#eee",
     },
     timeRange: {
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
     buttonsContainer: {
         marginTop: 16,
-        flexDirection: "row"
+        flexDirection: "row",
     },
     button: {
         alignSelf: "center",

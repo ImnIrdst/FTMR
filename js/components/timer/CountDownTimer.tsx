@@ -1,13 +1,17 @@
 import { transform } from "@babel/core";
 import React from "react";
-import { StyleSheet, Text, View, Button, ViewStyle } from "react-native";
-import { Colors, IconButton } from "react-native-paper";
+import { StyleSheet, Text, View, Button, ViewStyle, Animated } from "react-native";
+import { IconButton } from "react-native-paper";
+import { Colors } from "../../resources/Colors";
 import { formatEpoch, currentTimeMilies } from "../../utils/TimeUtils";
 
 interface Props {
     style: ViewStyle;
+    scrollY: Animated.Value;
     onTimerFinished: () => void;
 }
+
+export const bottomBarHeight = 82;
 
 export class CountDownTimer extends React.Component<Props> {
     interval: any;
@@ -17,6 +21,8 @@ export class CountDownTimer extends React.Component<Props> {
     state = {
         currentTime: this.duration,
     };
+
+    getScrollTranslation = () => Animated.diffClamp(this.props.scrollY, 0, bottomBarHeight + bottomBarHeight / 2);
 
     startTimer = () => {
         this.startTime = currentTimeMilies();
@@ -43,39 +49,46 @@ export class CountDownTimer extends React.Component<Props> {
     };
 
     render = () => (
-        <View style={this.props.style}>
-            <Text style={styles.body}>
-                {formatEpoch(this.state.currentTime)}
-            </Text>
+        <Animated.View
+            style={[this.props.style, styles.container, { transform: [{ translateY: this.getScrollTranslation() }] }]}
+        >
+            <Text style={styles.body}>{formatEpoch(this.state.currentTime)}</Text>
             <IconButton
                 icon={"play"}
                 onPress={this.startTimer}
                 size={42}
-                color={Colors.grey900}
+                color={Colors.backgroundLight}
                 style={styles.button}
                 accessibilityTraits={"TODO"}
                 accessibilityComponentType={"TODO"}
             />
-        </View>
+        </Animated.View>
     );
 }
 
 const styles = StyleSheet.create({
+    container: {
+        height: bottomBarHeight,
+        flexDirection: "row",
+        borderTopColor: Colors.backgroundLighter,
+        borderTopWidth: 2,
+        backgroundColor: Colors.backgroundLight,
+    },
     body: {
         textAlignVertical: "center",
         textAlign: "center",
         flex: 1,
         padding: 16,
-        transform: [{ scaleY: 1.1 }],
-        fontSize: 64,
+        fontSize: 32,
         fontWeight: "normal",
         color: "#eee",
     },
     button: {
+        position: "absolute",
         alignSelf: "center",
         backgroundColor: "orange",
-        marginTop: 0,
+        top: -bottomBarHeight / 2,
+        right: 0,
         marginHorizontal: 16,
-        marginBottom: 32,
     },
 });

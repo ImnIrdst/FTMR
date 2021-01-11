@@ -10,9 +10,7 @@ today.toLocaleString();
 const todos: Todo[] = []
 
 let _ = [
-    { text: "- Hide header with scroll", isChecked: false },
     { text: "- Add next and previous date button", isChecked: false },
-    { text: "- Redesign Bottom bar", isChecked: false },
     { text: "- Change timer play icon state to repeat", isChecked: false },
     { text: "- Add increase and decrease timer duration", isChecked: false },
     { text: "- Add todos and persist data", isChecked: false },
@@ -22,6 +20,8 @@ let _ = [
     { text: "- Add buttons for sound profile", isChecked: true },
     { text: "- Add cross line on done todos", isChecked: true },
     { text: "- Add Today date header", isChecked: true },
+    { text: "- Hide header with scroll", isChecked: true },
+    { text: "- Redesign Bottom bar", isChecked: true },
 ].forEach((element, index) => {
     todos.push(new Todo(index, element.text, element.isChecked));
 });

@@ -4,7 +4,7 @@ import moment from "moment-jalaali";
 import { StatusBar } from "expo-status-bar";
 import { SafeAreaView, StyleSheet, View, Text, NativeSyntheticEvent, NativeScrollEvent, Animated } from "react-native";
 import { sendNotification } from "./js/utils/NotificationUtils";
-import { CountDownTimer } from "./js/components/timer/CountDownTimer";
+import { bottomBarHeight, CountDownTimer } from "./js/components/timer/CountDownTimer";
 import { TimeFrameListUI } from "./js/components/timeframe/TimeFrameListUI";
 import { mockTimeFrames } from "./js/mock/MockTimeFrames";
 import { Colors } from "./js/resources/Colors";
@@ -17,27 +17,26 @@ export default class App extends React.Component {
         headerHeightAnimated: 0,
     };
 
-    scrollX = new Animated.Value(0);
-    
+    scrollY = new Animated.Value(0);
+
     getHeaderTranslation = () => {
-        const diffClamp = Animated.diffClamp(this.scrollX, 0, headerHeight)
-        return Animated.multiply(-1, diffClamp)
-    }
+        const diffClamp = Animated.diffClamp(this.scrollY, 0, headerHeight);
+        return Animated.multiply(-1, diffClamp);
+    };
 
     onTimerFinished = () => sendNotification();
 
     getGregorianDate = () => moment().format("Do MMMM YYYY");
     getJalaaliDate = () => moment().format("jDo jMMMM  jYYYY"); // TODO extract this to day component
-    
+
     render = () => (
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" backgroundColor="black" />
 
             {
                 <AnimatedHeader
-                    style={[styles.headerContainer, 
-                    { transform: [{ translateY: this.getHeaderTranslation()}] }]}>
-                        
+                    style={[styles.headerContainer, { transform: [{ translateY: this.getHeaderTranslation() }] }]}
+                >
                     <Text style={styles.gregorianDate}>{this.getGregorianDate()}</Text>
                     <Text style={styles.jalayDate}>{this.getJalaaliDate()}</Text>
                 </AnimatedHeader>
@@ -46,11 +45,16 @@ export default class App extends React.Component {
             <TimeFrameListUI
                 style={styles.todosContainer}
                 timeFrames={mockTimeFrames}
-                scrollX={this.scrollX}
+                scrollX={this.scrollY}
                 topPadding={headerHeight}
+                bottomPadding={bottomBarHeight}
             />
 
-            <CountDownTimer style={styles.timerContainer} onTimerFinished={this.onTimerFinished} />
+            <CountDownTimer
+                style={styles.timerContainer}
+                onTimerFinished={this.onTimerFinished}
+                scrollY={this.scrollY}
+            />
         </SafeAreaView>
     );
 }
@@ -84,15 +88,15 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     todosContainer: {
-        flex: 5,
+        flex: 1,
         alignSelf: "stretch",
     },
     timerContainer: {
-        flex: 2,
-        borderRadius: 32,
-        alignSelf: "stretch",
-        backgroundColor: Colors.backgroundLighter,
-        alignContent: "center",
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 10,
     },
     hide: {
         display: "none",

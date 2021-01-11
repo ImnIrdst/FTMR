@@ -1,19 +1,20 @@
 import React from "react";
-import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, View, ViewStyle, Animated } from "react-native";
+import { StyleSheet, View, ViewStyle, Animated } from "react-native";
 import { TimeFrameItemUI } from "./TimeFrameItemUI";
 import { ScrollView } from "react-native-gesture-handler";
 import { TimeFrameData } from "./TimeFrameData";
 import { Colors } from "../../resources/Colors";
+import { bottomBarHeight } from "../timer/CountDownTimer";
 
 interface Props {
     style: ViewStyle;
     topPadding: number;
+    bottomPadding: number;
     timeFrames: TimeFrameData[];
     scrollX: Animated.Value;
 }
 
 export class TimeFrameListUI extends React.Component<Props> {
-
     scrollViewAnimatedEvent = Animated.event(
         [
             {
@@ -25,21 +26,18 @@ export class TimeFrameListUI extends React.Component<Props> {
             },
         ],
         { useNativeDriver: false }
-    )
+    );
 
     getTimeFrames = () => this.props.timeFrames;
 
     render = () => (
         <View style={this.props.style}>
-            <ScrollView
-                scrollEventThrottle={1}
-                onScroll={this.scrollViewAnimatedEvent}
-                style={{ paddingTop: this.props.topPadding }}
-            >
-
+            <ScrollView scrollEventThrottle={1} onScroll={this.scrollViewAnimatedEvent}>
+                <View style={{ height: this.props.topPadding }}></View>
                 {this.getTimeFrames().map((timeFrame) => (
                     <TimeFrameItemUI style={styles.itemContainer} {...timeFrame} />
                 ))}
+                <View style={{ height: this.props.bottomPadding }}></View>
             </ScrollView>
         </View>
     );

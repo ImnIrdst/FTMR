@@ -6,14 +6,20 @@ interface Props extends TimeFrameData {
     style: ViewStyle;
 }
 export class TimeFrameItemUI extends React.Component<Props> {
+    // componentDidMount() {
+    //     console.log(timezone)
+    // }
+
     getTags = () => this.props.tags.join(", ");
     getTodos = () => this.props.todos;
+    getTimeRange = () => this.props.getStartTime() + " - " + this.props.getEndTime();
 
     render = () => (
         <View style={this.props.style}>
             <Text style={styles.title}>{this.getTags()}</Text>
+            <Text style={styles.timeRange}>{this.getTimeRange()}</Text>
             {this.getTodos().map((todo) => (
-                <Text key={todo.key} style={styles.body}>
+                <Text key={todo.key} style={styles.todo}>
                     {todo.text}
                 </Text>
             ))}
@@ -30,7 +36,13 @@ const styles = StyleSheet.create({
         fontSize: 32,
         color: "#eee",
     },
-    body: {
+    timeRange: {
+        fontSize: 14,
+        color: "#eee",
+        marginHorizontal: 16,
+        marginBottom: 16,
+    },
+    todo: {
         flex: 1,
         margin: 2,
         textAlignVertical: "center",

@@ -6,10 +6,6 @@ interface Props extends TimeFrameData {
     style: ViewStyle;
 }
 export class TimeFrameItemUI extends React.Component<Props> {
-    // componentDidMount() {
-    //     console.log(timezone)
-    // }
-
     getTags = () => this.props.tags.join(", ");
     getTodos = () => this.props.todos;
     getTimeRange = () => this.props.getStartTime() + " - " + this.props.getEndTime();

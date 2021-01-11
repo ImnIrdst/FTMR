@@ -9,10 +9,6 @@ import { mockTimeFrames } from "./js/mock/MockTimeFrames";
 import { Colors } from "react-native-paper";
 
 export default class App extends React.Component {
-    componentDidMount = () => {
-        console.log(styles.container);
-    };
-
     onTimerFinished = () => {
         sendNotification();
     };
@@ -21,15 +17,9 @@ export default class App extends React.Component {
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" backgroundColor="black" />
 
-            <TimeFrameListUI
-                style={styles.todosContainer}
-                timeFrames={mockTimeFrames}
-            />
+            <TimeFrameListUI style={styles.todosContainer} timeFrames={mockTimeFrames} />
 
-            <CountDownTimer
-                style={styles.timerContainer}
-                onTimerFinished={this.onTimerFinished}
-            />
+            <CountDownTimer style={styles.timerContainer} onTimerFinished={this.onTimerFinished} />
         </SafeAreaView>
     );
 }

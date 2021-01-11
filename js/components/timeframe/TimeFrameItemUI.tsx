@@ -1,7 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View, ViewStyle } from "react-native";
-import { TimeFrameData } from "./TimeFrameData";
+import { TimeFrameData, Todo } from "./TimeFrameData";
 import { ToggleButtonUI } from "./ToggleButtonUI";
+import { TodoUI } from "./TodoUI";
 
 interface Props extends TimeFrameData {
     style: ViewStyle;
@@ -13,19 +14,19 @@ export class TimeFrameItemUI extends React.Component<Props> {
 
     doNothing = () => {};
 
+    // Todo extract this
+    getTodoStateStyle = () => {
+        
+    }
+
     render = () => (
         <View style={this.props.style}>
             <Text style={styles.title}>{this.getTags()}</Text>
             <Text style={styles.timeRange}>{this.getTimeRange()}</Text>
-            {this.getTodos().map((todo) => (
-                <Text key={todo.key} style={styles.todo}>
-                    {todo.text}
-                </Text>
-            ))}
+            {this.getTodos().map((todo) => <TodoUI style={styles.todo} todo={todo}  />)}
             <View style={styles.buttonsContainer}>
                 <ToggleButtonUI style={styles.button} icon={"alarm"} onToggle={this.doNothing} />
                 <ToggleButtonUI style={styles.button} icon={"bell-outline"} onToggle={this.doNothing} />
-                
                 <ToggleButtonUI style={styles.button} icon={"tag-multiple-outline"} onToggle={this.doNothing} />
                 <ToggleButtonUI style={styles.button} icon={"pencil-outline"} onToggle={this.doNothing} />
                 <ToggleButtonUI style={styles.button} icon={"alert-octagon-outline"} onToggle={this.doNothing} />

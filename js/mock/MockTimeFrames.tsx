@@ -10,16 +10,17 @@ today.toLocaleString();
 const todos: Todo[] = []
 
 let _ = [
-    { text: "- change timer play icon state to repeat" },
-    { text: "- Add increase and decrease timer duration" },
-    { text: "- Add todos and persist data" },
-    { text: "- Add todos and checkboxes" },
-    { text: "- Add cross line on done todos" },
-    { text: "- Add buttons for sound profile" },
-    { text: "- Add tag manager screen" },
-    { text: "- Use material bottom bar for timer" },
+    { text: "- Redesign Bottom bar", isChecked: false },
+    { text: "- Change timer play icon state to repeat", isChecked: false },
+    { text: "- Add increase and decrease timer duration", isChecked: false },
+    { text: "- Add todos and persist data", isChecked: false },
+    { text: "- Add todos and checkboxes", isChecked: false },
+    { text: "- Add tag manager screen", isChecked: false },
+    { text: "- Use material bottom bar for timer", isChecked: false },
+    { text: "- Add buttons for sound profile", isChecked: true },
+    { text: "- Add cross line on done todos", isChecked: true },
 ].forEach((element, index) => {
-    todos.push(new Todo(index, element.text));
+    todos.push(new Todo(index, element.text, element.isChecked));
 });
 
 

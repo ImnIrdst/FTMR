@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, ViewStyle } from "react-native";
 import { TimeFrameData } from "./TimeFrameData";
+import { ToggleButtonUI } from "./ToggleButtonUI";
 
 interface Props extends TimeFrameData {
     style: ViewStyle;
@@ -9,6 +10,8 @@ export class TimeFrameItemUI extends React.Component<Props> {
     getTags = () => this.props.tags.join(", ");
     getTodos = () => this.props.todos;
     getTimeRange = () => this.props.getStartTime() + " - " + this.props.getEndTime();
+
+    doNothing = () => {};
 
     render = () => (
         <View style={this.props.style}>
@@ -19,9 +22,17 @@ export class TimeFrameItemUI extends React.Component<Props> {
                     {todo.text}
                 </Text>
             ))}
+            <View style={styles.buttonsContainer}>
+                <ToggleButtonUI style={styles.button} icon={"alarm"} onToggle={this.doNothing} />
+                <ToggleButtonUI style={styles.button} icon={"bell-outline"} onToggle={this.doNothing} />
+                
+                <ToggleButtonUI style={styles.button} icon={"tag-multiple-outline"} onToggle={this.doNothing} />
+                <ToggleButtonUI style={styles.button} icon={"pencil-outline"} onToggle={this.doNothing} />
+                <ToggleButtonUI style={styles.button} icon={"alert-octagon-outline"} onToggle={this.doNothing} />
+            </View>
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     title: {
@@ -45,5 +56,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 8,
         fontSize: 16,
         color: "#eee",
+    },
+    buttonsContainer: {
+        marginTop: 16,
+        flexDirection: "row"
+    },
+    button: {
+        alignSelf: "center",
     },
 });

@@ -1,7 +1,7 @@
 import React from "react";
 import Constants from "expo-constants";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, StyleProp, View } from "react-native";
+import { SafeAreaView, StyleSheet } from "react-native";
 import { sendNotification } from "./js/utils/NotificationUtils";
 import { CountDownTimer } from "./js/components/timer/CountDownTimer";
 import { TimeFrameListUI } from "./js/components/timeframe/TimeFrameListUI";

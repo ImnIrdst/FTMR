@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, ViewStyle } from "react-native";
 import { TimeFrameData, Todo } from "./TimeFrameData";
-import { ToggleButtonUI } from "./ToggleButtonUI";
+import { ToggleButtonUI } from "../button/ToggleButtonUI";
 import { TodoUI } from "./TodoUI";
 
 interface Props extends TimeFrameData {

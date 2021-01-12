@@ -1,14 +1,14 @@
-import React, { useRef } from "react";
-import Constants from "expo-constants";
+import React from "react";
 import moment from "moment-jalaali";
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, View, Text, Animated, ViewStyle } from "react-native";
 import { mockTimeFrames } from "../../mock/MockTimeFrames";
 import { bottomBarHeight } from "../timer/CountDownTimer";
 import { TimeFrameListUI } from "../timeframe/TimeFrameListUI";
 import { AppColors } from "../../resources/Colors";
+import { ToolbarButtonUI } from "../button/ToolbarButtonUI";
 
-export const headerHeight = 92;
+
+export const headerHeight = 128;
 
 interface Props {
     style: ViewStyle;
@@ -26,15 +26,22 @@ export class DayUI extends React.Component<Props> {
     };
 
     getGregorianDate = () => moment().format("Do MMMM YYYY");
+    
     getJalaaliDate = () => moment().format("jDo jMMMM  jYYYY");
+
+    onPrevDayPress = () => {};
+
+    onNextDayPress = () => {};
 
     render = () => (
         <View style={[this.props.style, styles.container]}>
-            <StatusBar style="light" backgroundColor="black" />
-
             <Animated.View style={[styles.headerContainer, this.getTranslatioStyle()]}>
-                <Text style={styles.gregorianDate}>{this.getGregorianDate()}</Text>
-                <Text style={styles.jalayDate}>{this.getJalaaliDate()}</Text>
+                <ToolbarButtonUI style={styles.headerIcons} icon={"chevron-left"} onPress={this.onPrevDayPress} />
+                <View style={styles.dateContainer}>
+                    <Text style={styles.gregorianDate}>{this.getGregorianDate()}</Text>
+                    <Text style={styles.jalayDate}>{this.getJalaaliDate()}</Text>
+                </View>
+                <ToolbarButtonUI style={styles.headerIcons} icon={"chevron-right"} onPress={this.onNextDayPress} />
             </Animated.View>
 
             <TimeFrameListUI
@@ -50,9 +57,11 @@ export class DayUI extends React.Component<Props> {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         backgroundColor: "black",
     },
     headerContainer: {
+        flexDirection: "row",
         position: "absolute",
         backgroundColor: AppColors.background,
         top: 0,
@@ -60,7 +69,12 @@ const styles = StyleSheet.create({
         right: 0,
         zIndex: 10,
         height: headerHeight,
+        alignItems: "center",
+        justifyContent: "center",
         paddingVertical: 16,
+    },
+    dateContainer: { 
+        marginHorizontal: 8 
     },
     gregorianDate: {
         fontSize: 32,
@@ -72,6 +86,7 @@ const styles = StyleSheet.create({
         color: AppColors.textColor,
         textAlign: "center",
     },
+    headerIcons: {},
     todosContainer: {
         flex: 1,
         alignSelf: "stretch",

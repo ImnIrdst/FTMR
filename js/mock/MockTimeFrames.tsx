@@ -17,6 +17,8 @@ let _ = [
     { text: "- Add todos and checkboxes", isChecked: false },
     { text: "- Add tag manager screen", isChecked: false },
     { text: "- Use material bottom bar for timer", isChecked: false },
+    { text: "- Click on the header and open calendar", isChecked: false },
+
     { text: "- Add buttons for sound profile", isChecked: true },
     { text: "- Add cross line on done todos", isChecked: true },
     { text: "- Add Today date header", isChecked: true },

@@ -1,24 +1,14 @@
-import React, { useRef } from "react";
+import React from "react";
 import Constants from "expo-constants";
 import moment from "moment-jalaali";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, View, Text, NativeSyntheticEvent, NativeScrollEvent, Animated } from "react-native";
+import { SafeAreaView, StyleSheet, Animated } from "react-native";
 import { sendNotification } from "./js/utils/NotificationUtils";
-import { bottomBarHeight, CountDownTimer } from "./js/components/timer/CountDownTimer";
-import { TimeFrameListUI } from "./js/components/timeframe/TimeFrameListUI";
-import { mockTimeFrames } from "./js/mock/MockTimeFrames";
-import { AppColors } from "./js/resources/Colors";
+import { CountDownTimer } from "./js/components/timer/CountDownTimer";
 import { DayUI } from "./js/components/day/DayUI";
-
-const headerHeight = 92;
 
 export default class App extends React.Component {
     scrollY = new Animated.Value(0);
-
-    getHeaderTranslation = () => {
-        const diffClamp = Animated.diffClamp(this.scrollY, 0, headerHeight);
-        return Animated.multiply(-1, diffClamp);
-    };
 
     onTimerFinished = () => sendNotification();
 
@@ -29,9 +19,7 @@ export default class App extends React.Component {
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" backgroundColor="black" />
 
-            <DayUI style={styles.dayContainer} scrollY={this.scrollY}>
-
-            </DayUI>
+            <DayUI style={styles.dayContainer} scrollY={this.scrollY} />
 
             <CountDownTimer
                 style={styles.timerContainer}

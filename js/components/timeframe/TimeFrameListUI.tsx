@@ -1,10 +1,9 @@
 import React from "react";
-import { StyleSheet, View, ViewStyle, Animated } from "react-native";
+import { StyleSheet, View, ViewStyle, Animated, ListRenderItem, ListRenderItemInfo } from "react-native";
 import { TimeFrameItemUI } from "./TimeFrameItemUI";
-import { ScrollView } from "react-native-gesture-handler";
+import { FlatList } from "react-native-gesture-handler";
 import { TimeFrameData } from "./TimeFrameData";
 import { AppColors } from "../../resources/Colors";
-import { bottomBarHeight } from "../timer/CountDownTimer";
 
 interface Props {
     style: ViewStyle;
@@ -30,15 +29,22 @@ export class TimeFrameListUI extends React.Component<Props> {
 
     getTimeFrames = () => this.props.timeFrames;
 
+    renderItem = (item: ListRenderItemInfo<TimeFrameData>) => (
+        <TimeFrameItemUI style={styles.itemContainer} {...item.item} />
+    );
+
     render = () => (
         <View style={this.props.style}>
-            <ScrollView scrollEventThrottle={1} onScroll={this.scrollViewAnimatedEvent}>
-                <View style={{ height: this.props.topPadding }}></View>
-                {this.getTimeFrames().map((timeFrame) => (
-                    <TimeFrameItemUI style={styles.itemContainer} {...timeFrame} />
-                ))}
-                <View style={{ height: this.props.bottomPadding }}></View>
-            </ScrollView>
+            <FlatList
+                contentContainerStyle={{
+                    paddingTop: this.props.topPadding,
+                    paddingBottom: this.props.bottomPadding,
+                }}
+                data={this.getTimeFrames()}
+                renderItem={this.renderItem}
+                scrollEventThrottle={1}
+                onScroll={this.scrollViewAnimatedEvent}
+            />
         </View>
     );
 }
@@ -54,4 +60,5 @@ const styles = StyleSheet.create({
         alignItems: "flex-start",
         borderRadius: 16,
     },
+    flatListContentContainerStyle: {},
 });

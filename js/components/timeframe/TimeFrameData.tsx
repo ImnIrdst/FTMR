@@ -13,12 +13,12 @@ export class Todo {
     }
 }
 export class TimeFrameData {
-    key: number;
+    key: string;
     tags: string[];
     date: Date;
     todos: Todo[];
 
-    constructor(key: number, tags: string[], date: Date, todos: Todo[]) {
+    constructor(key: string, tags: string[], date: Date, todos: Todo[]) {
         this.key = key;
         this.tags = tags;
         this.date = date;

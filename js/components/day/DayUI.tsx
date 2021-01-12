@@ -7,7 +7,6 @@ import { TimeFrameListUI } from "../timeframe/TimeFrameListUI";
 import { AppColors } from "../../resources/Colors";
 import { ToolbarButtonUI } from "../button/ToolbarButtonUI";
 
-
 export const headerHeight = 128;
 
 interface Props {

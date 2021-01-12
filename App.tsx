@@ -15,6 +15,10 @@ export default class App extends React.Component {
     getGregorianDate = () => moment().format("Do MMMM YYYY");
     getJalaaliDate = () => moment().format("jDo jMMMM  jYYYY"); // TODO extract this to day component
 
+    componentDidMount() {
+        this.scrollY = new Animated.Value(0);
+    }
+
     render = () => (
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" backgroundColor="black" />

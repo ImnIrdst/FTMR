@@ -22,6 +22,7 @@ let _ = [
     { text: "- Add Today date header", isChecked: true },
     { text: "- Hide header with scroll", isChecked: true },
     { text: "- Redesign Bottom bar", isChecked: true },
+    { text: "- Create day component", isChecked: true },
 ].forEach((element, index) => {
     todos.push(new Todo(index, element.text, element.isChecked));
 });

@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
         color: "#eee",
     },
     buttonsContainer: {
+        alignSelf: "stretch",
         marginTop: 16,
         flexDirection: "row",
     },

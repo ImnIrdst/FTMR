@@ -2,7 +2,7 @@ import { transform } from "@babel/core";
 import React from "react";
 import { StyleSheet, Text, View, Button, ViewStyle, Animated } from "react-native";
 import { IconButton } from "react-native-paper";
-import { Colors } from "../../resources/Colors";
+import { AppColors } from "../../resources/Colors";
 import { formatEpoch, currentTimeMilies } from "../../utils/TimeUtils";
 
 interface Props {
@@ -57,7 +57,7 @@ export class CountDownTimer extends React.Component<Props> {
                 icon={"play"}
                 onPress={this.startTimer}
                 size={42}
-                color={Colors.backgroundLight}
+                color={AppColors.backgroundLight}
                 style={styles.button}
                 accessibilityTraits={"TODO"}
                 accessibilityComponentType={"TODO"}
@@ -70,9 +70,9 @@ const styles = StyleSheet.create({
     container: {
         height: bottomBarHeight,
         flexDirection: "row",
-        borderTopColor: Colors.backgroundLighter,
+        borderTopColor: AppColors.backgroundLighter,
         borderTopWidth: 2,
-        backgroundColor: Colors.backgroundLight,
+        backgroundColor: AppColors.backgroundLight,
     },
     body: {
         textAlignVertical: "center",

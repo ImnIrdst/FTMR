@@ -3,7 +3,7 @@ import { StyleSheet, View, ViewStyle, Animated } from "react-native";
 import { TimeFrameItemUI } from "./TimeFrameItemUI";
 import { ScrollView } from "react-native-gesture-handler";
 import { TimeFrameData } from "./TimeFrameData";
-import { Colors } from "../../resources/Colors";
+import { AppColors } from "../../resources/Colors";
 import { bottomBarHeight } from "../timer/CountDownTimer";
 
 interface Props {
@@ -46,7 +46,7 @@ export class TimeFrameListUI extends React.Component<Props> {
 const styles = StyleSheet.create({
     itemContainer: {
         alignSelf: "stretch",
-        backgroundColor: Colors.backgroundLight,
+        backgroundColor: AppColors.backgroundLight,
         marginHorizontal: 16,
         marginVertical: 8,
         padding: 8,

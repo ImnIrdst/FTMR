@@ -7,16 +7,12 @@ import { sendNotification } from "./js/utils/NotificationUtils";
 import { bottomBarHeight, CountDownTimer } from "./js/components/timer/CountDownTimer";
 import { TimeFrameListUI } from "./js/components/timeframe/TimeFrameListUI";
 import { mockTimeFrames } from "./js/mock/MockTimeFrames";
-import { Colors } from "./js/resources/Colors";
+import { AppColors } from "./js/resources/Colors";
+import { DayUI } from "./js/components/day/DayUI";
 
-const AnimatedHeader = Animated.createAnimatedComponent(View);
 const headerHeight = 92;
 
 export default class App extends React.Component {
-    state = {
-        headerHeightAnimated: 0,
-    };
-
     scrollY = new Animated.Value(0);
 
     getHeaderTranslation = () => {
@@ -33,22 +29,9 @@ export default class App extends React.Component {
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" backgroundColor="black" />
 
-            {
-                <AnimatedHeader
-                    style={[styles.headerContainer, { transform: [{ translateY: this.getHeaderTranslation() }] }]}
-                >
-                    <Text style={styles.gregorianDate}>{this.getGregorianDate()}</Text>
-                    <Text style={styles.jalayDate}>{this.getJalaaliDate()}</Text>
-                </AnimatedHeader>
-            }
+            <DayUI style={styles.dayContainer} scrollY={this.scrollY}>
 
-            <TimeFrameListUI
-                style={styles.todosContainer}
-                timeFrames={mockTimeFrames}
-                scrollX={this.scrollY}
-                topPadding={headerHeight}
-                bottomPadding={bottomBarHeight}
-            />
+            </DayUI>
 
             <CountDownTimer
                 style={styles.timerContainer}
@@ -67,29 +50,9 @@ const styles = StyleSheet.create({
         justifyContent: "flex-start",
         marginTop: Constants.statusBarHeight,
     },
-    headerContainer: {
-        position: "absolute",
-        backgroundColor: Colors.background,
-        top: 0,
-        left: 0,
-        right: 0,
-        zIndex: 10,
-        height: headerHeight,
-        paddingVertical: 16,
-    },
-    gregorianDate: {
-        fontSize: 32,
-        color: Colors.textColor,
-        textAlign: "center",
-    },
-    jalayDate: {
-        fontSize: 16,
-        color: Colors.textColor,
-        textAlign: "center",
-    },
-    todosContainer: {
+    dayContainer: {
         flex: 1,
-        alignSelf: "stretch",
+        alignSelf: "stretch"
     },
     timerContainer: {
         position: "absolute",

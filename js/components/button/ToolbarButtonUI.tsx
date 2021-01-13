@@ -27,8 +27,7 @@ export class ToolbarButtonUI extends React.Component<Props, State> {
                 color={AppColors.textColor}
                 style={[styles.button]}
                 accessibilityTraits={"TODO"}
-                accessibilityComponentType={"TODO"}
-            />
+                accessibilityComponentType={"TODO"}/>
         </View>
     );
 }

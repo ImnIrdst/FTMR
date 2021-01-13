@@ -1,19 +1,15 @@
 import React from "react";
 import Constants from "expo-constants";
-import moment from "moment-jalaali";
-import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, Animated } from "react-native";
-import { sendNotification } from "./js/utils/NotificationUtils";
-import { CountDownTimer } from "./js/components/timer/CountDownTimer";
-import { DayUI } from "./js/components/day/DayUI";
+import {StatusBar} from "expo-status-bar";
+import {SafeAreaView, StyleSheet, Animated} from "react-native";
+import {sendNotification} from "./js/utils/NotificationUtils";
+import {CountDownTimer} from "./js/components/timer/CountDownTimer";
+import {DayUI} from "./js/components/day/DayUI";
 
 export default class App extends React.Component {
     scrollY = new Animated.Value(0);
 
     onTimerFinished = () => sendNotification();
-
-    getGregorianDate = () => moment().format("Do MMMM YYYY");
-    getJalaaliDate = () => moment().format("jDo jMMMM  jYYYY"); // TODO extract this to day component
 
     componentDidMount() {
         this.scrollY = new Animated.Value(0);
@@ -21,15 +17,14 @@ export default class App extends React.Component {
 
     render = () => (
         <SafeAreaView style={styles.container}>
-            <StatusBar style="light" backgroundColor="black" />
+            <StatusBar style="light" backgroundColor="black"/>
 
-            <DayUI style={styles.dayContainer} scrollY={this.scrollY} />
+            <DayUI style={styles.dayContainer} scrollY={this.scrollY}/>
 
             <CountDownTimer
                 style={styles.timerContainer}
                 onTimerFinished={this.onTimerFinished}
-                scrollY={this.scrollY}
-            />
+                scrollY={this.scrollY}/>
         </SafeAreaView>
     );
 }

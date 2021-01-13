@@ -19,6 +19,7 @@ export class ToggleButtonUI extends React.Component<Props, State> {
 
     toggle = () => {
         this.setState((prevState) => {
+            this.props.onToggle(!prevState.isActive);
             return { isActive: !prevState.isActive };
         });
     };

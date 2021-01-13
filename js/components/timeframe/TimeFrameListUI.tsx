@@ -1,9 +1,9 @@
-import React from "react";
-import { StyleSheet, View, ViewStyle, Animated, ListRenderItem, ListRenderItemInfo } from "react-native";
-import { TimeFrameItemUI } from "./TimeFrameItemUI";
-import { FlatList } from "react-native-gesture-handler";
-import { TimeFrameData } from "./TimeFrameData";
-import { AppColors } from "../../resources/Colors";
+import React, {createRef} from "react";
+import {StyleSheet, View, ViewStyle, Animated} from "react-native";
+import {TimeFrameItemUI} from "./TimeFrameItemUI";
+import {ScrollView} from "react-native-gesture-handler";
+import {TimeFrameData} from "./TimeFrameData";
+import {AppColors} from "../../resources/Colors";
 
 interface Props {
     style: ViewStyle;
@@ -14,6 +14,9 @@ interface Props {
 }
 
 export class TimeFrameListUI extends React.Component<Props> {
+    scrollViewRef = createRef<ScrollView>();
+    timeFrameItemsRef: { [k: string]: TimeFrameItemUI | null } = {};
+
     scrollViewAnimatedEvent = Animated.event(
         [
             {
@@ -24,28 +27,51 @@ export class TimeFrameListUI extends React.Component<Props> {
                 },
             },
         ],
-        { useNativeDriver: false }
+        {useNativeDriver: false}
     );
 
     getTimeFrames = () => this.props.timeFrames;
 
-    renderItem = (item: ListRenderItemInfo<TimeFrameData>) => (
-        <TimeFrameItemUI style={styles.itemContainer} {...item.item} />
-    );
+    scrollToToday = () => {
+        let sum = 0;
+        for (let i = 0; i < this.getTimeFrames().length; i++) {
+            const timeFrame = this.timeFrameItemsRef[i]
+
+            if (timeFrame === null) continue;
+
+            sum += timeFrame.height + 16;
+            if (timeFrame.isExpanded()) {
+                break;
+            }
+        }
+
+        this.scrollViewRef.current?.scrollTo({x: 0, y: this.props.topPadding + sum, animated: false});
+        setTimeout(() => {
+            this.scrollViewRef.current?.scrollTo({x: 0, y: sum, animated: true});
+        }, 500);
+    }
 
     render = () => (
         <View style={this.props.style}>
-            <FlatList
+            <ScrollView
+                ref={this.scrollViewRef}
                 contentContainerStyle={{
                     paddingTop: this.props.topPadding,
                     paddingBottom: this.props.bottomPadding,
                 }}
-                data={this.getTimeFrames()}
-                renderItem={this.renderItem}
-                scrollEventThrottle={1}
                 onScroll={this.scrollViewAnimatedEvent}
-            />
+                onContentSizeChange={this.scrollToToday}>
+                {this.getTimeFrames().map((timeFrame) => this.renderItem(timeFrame))}
+            </ScrollView>
         </View>
+    );
+
+    renderItem = (item: TimeFrameData) => (
+        <TimeFrameItemUI
+            ref={(el) => (this.timeFrameItemsRef[item.key] = el)}
+            style={styles.itemContainer}
+            {...item}
+        />
     );
 }
 
@@ -60,5 +86,4 @@ const styles = StyleSheet.create({
         alignItems: "flex-start",
         borderRadius: 16,
     },
-    flatListContentContainerStyle: {},
 });

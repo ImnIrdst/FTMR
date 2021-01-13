@@ -1,11 +1,11 @@
 import React from "react";
 import moment from "moment-jalaali";
-import { StyleSheet, View, Text, Animated, ViewStyle } from "react-native";
-import { mockTimeFrames } from "../../mock/MockTimeFrames";
-import { bottomBarHeight } from "../timer/CountDownTimer";
-import { TimeFrameListUI } from "../timeframe/TimeFrameListUI";
-import { AppColors } from "../../resources/Colors";
-import { ToolbarButtonUI } from "../button/ToolbarButtonUI";
+import {StyleSheet, View, Text, Animated, ViewStyle} from "react-native";
+import {mockTimeFrames} from "../../mock/MockTimeFrames";
+import {bottomBarHeight} from "../timer/CountDownTimer";
+import {TimeFrameListUI} from "../timeframe/TimeFrameListUI";
+import {AppColors} from "../../resources/Colors";
+import {ToolbarButtonUI} from "../button/ToolbarButtonUI";
 
 export const headerHeight = 128;
 
@@ -20,27 +20,29 @@ export class DayUI extends React.Component<Props> {
         return Animated.multiply(-1, diffClamp);
     };
 
-    getTranslatioStyle = () => {
-        return { transform: [{ translateY: this.getHeaderTranslation() }] };
+    getHeaderTranslationStyle = () => {
+        return {transform: [{translateY: this.getHeaderTranslation()}]};
     };
 
     getGregorianDate = () => moment().format("Do MMMM YYYY");
-    
+
     getJalaaliDate = () => moment().format("jDo jMMMM  jYYYY");
 
-    onPrevDayPress = () => {};
+    onPrevDayPress = () => {
+    };
 
-    onNextDayPress = () => {};
+    onNextDayPress = () => {
+    };
 
     render = () => (
         <View style={[this.props.style, styles.container]}>
-            <Animated.View style={[styles.headerContainer, this.getTranslatioStyle()]}>
-                <ToolbarButtonUI style={styles.headerIcons} icon={"chevron-left"} onPress={this.onPrevDayPress} />
+            <Animated.View style={[styles.headerContainer, this.getHeaderTranslationStyle()]}>
+                <ToolbarButtonUI style={styles.headerIcons} icon={"chevron-left"} onPress={this.onPrevDayPress}/>
                 <View style={styles.dateContainer}>
                     <Text style={styles.gregorianDate}>{this.getGregorianDate()}</Text>
-                    <Text style={styles.jalayDate}>{this.getJalaaliDate()}</Text>
+                    <Text style={styles.jalaaliDate}>{this.getJalaaliDate()}</Text>
                 </View>
-                <ToolbarButtonUI style={styles.headerIcons} icon={"chevron-right"} onPress={this.onNextDayPress} />
+                <ToolbarButtonUI style={styles.headerIcons} icon={"chevron-right"} onPress={this.onNextDayPress}/>
             </Animated.View>
 
             <TimeFrameListUI
@@ -48,8 +50,7 @@ export class DayUI extends React.Component<Props> {
                 timeFrames={mockTimeFrames}
                 scrollX={this.props.scrollY}
                 topPadding={headerHeight}
-                bottomPadding={bottomBarHeight}
-            />
+                bottomPadding={bottomBarHeight}/>
         </View>
     );
 }
@@ -72,15 +73,15 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         paddingVertical: 16,
     },
-    dateContainer: { 
-        marginHorizontal: 8 
+    dateContainer: {
+        marginHorizontal: 8,
     },
     gregorianDate: {
         fontSize: 32,
         color: AppColors.textColor,
         textAlign: "center",
     },
-    jalayDate: {
+    jalaaliDate: {
         fontSize: 16,
         color: AppColors.textColor,
         textAlign: "center",

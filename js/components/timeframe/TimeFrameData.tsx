@@ -1,4 +1,4 @@
-import moment from "moment";
+import moment from "moment-jalaali";
 
 export const timeFrameDurationMinutes = 30;
 export class Todo {
@@ -15,16 +15,20 @@ export class Todo {
 export class TimeFrameData {
     key: string;
     tags: string[];
-    date: Date;
+    date: moment.Moment;
     todos: Todo[];
 
-    constructor(key: string, tags: string[], date: Date, todos: Todo[]) {
+    constructor(key: string, tags: string[], date: moment.Moment, todos: Todo[]) {
         this.key = key;
         this.tags = tags;
         this.date = date;
         this.todos = todos;
     }
 
-    getStartTime = () => moment(this.date).format("HH:mm");
-    getEndTime = () => moment(this.date).add(timeFrameDurationMinutes, "minutes").format("HH:mm");
+    isCurrentTimeFrame = () => {
+        const diff = moment().diff(this.date, "minute");
+        return 0 <= diff && diff < 30;
+    };
+    getStartTime = () => this.date.format("HH:mm");
+    getEndTime = () => this.date.add(timeFrameDurationMinutes, "minutes").format("HH:mm");
 }

@@ -17,18 +17,26 @@ export class TimeFrameListUI extends React.Component<Props> {
     scrollViewRef = createRef<ScrollView>();
     timeFrameItemsRef: { [k: string]: TimeFrameItemUI | null } = {};
 
-    scrollViewAnimatedEvent = Animated.event(
-        [
-            {
-                nativeEvent: {
-                    contentOffset: {
-                        y: this.props.scrollX,
+    state = {
+        scrollViewAnimatedEvent: undefined
+    }
+
+    setAnimatedScrollY = () => {
+        this.setState({
+            scrollViewAnimatedEvent: Animated.event(
+                [
+                    {
+                        nativeEvent: {
+                            contentOffset: {
+                                y: this.props.scrollX,
+                            },
+                        },
                     },
-                },
-            },
-        ],
-        {useNativeDriver: false}
-    );
+                ],
+                {useNativeDriver: false}
+            ),
+        })
+    }
 
     getTimeFrames = () => this.props.timeFrames;
 
@@ -39,16 +47,18 @@ export class TimeFrameListUI extends React.Component<Props> {
 
             if (timeFrame === null) continue;
 
-            sum += timeFrame.height + 16;
             if (timeFrame.isExpanded()) {
                 break;
             }
+
+            sum += timeFrame.height + 16;
         }
 
-        this.scrollViewRef.current?.scrollTo({x: 0, y: this.props.topPadding + sum, animated: false});
-        setTimeout(() => {
-            this.scrollViewRef.current?.scrollTo({x: 0, y: sum, animated: true});
-        }, 500);
+        this.scrollViewRef.current?.scrollTo({x: 0, y: sum, animated: true});
+        setTimeout(()=> {
+            this.setAnimatedScrollY()
+        }, 1000)
+
     }
 
     render = () => (
@@ -59,7 +69,7 @@ export class TimeFrameListUI extends React.Component<Props> {
                     paddingTop: this.props.topPadding,
                     paddingBottom: this.props.bottomPadding,
                 }}
-                onScroll={this.scrollViewAnimatedEvent}
+                onScroll={this.state.scrollViewAnimatedEvent}
                 onContentSizeChange={this.scrollToToday}>
                 {this.getTimeFrames().map((timeFrame) => this.renderItem(timeFrame))}
             </ScrollView>

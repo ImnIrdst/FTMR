@@ -4,8 +4,9 @@ import { IconButton } from "react-native-paper";
 import { AppColors } from "../../resources/Colors";
 
 interface Props {
-    style: ViewStyle;
+    style?: ViewStyle;
     icon: string;
+    size?: number;
     onPress: () => void;
 }
 
@@ -19,11 +20,11 @@ export class ToolbarButtonUI extends React.Component<Props, State> {
     };
 
     render = () => (
-        <View style={this.props.style}>
+        <View style={this.props.style || {}}>
             <IconButton
                 icon={this.props.icon}
                 onPress={this.onPress}
-                size={32}
+                size={this.props.size || 32}
                 color={AppColors.textColor}
                 style={[styles.button]}
                 accessibilityTraits={"TODO"}

@@ -1,9 +1,11 @@
 import React from "react";
-import {StyleSheet, Text, View, ViewStyle} from "react-native";
-import {TimeFrameData} from "./TimeFrameData";
+import {Pressable, StyleSheet, Text, View, ViewStyle} from "react-native";
+import {TimeFrameData, Todo} from "./TimeFrameData";
 import {ToggleButtonUI} from "../button/ToggleButtonUI";
 import {TodoUI} from "./TodoUI";
 import {ToolbarButtonUI} from "../button/ToolbarButtonUI";
+import {AppColors} from "../../resources/Colors";
+import {Icon} from "react-native-elements";
 
 interface Props extends TimeFrameData {
     style: ViewStyle;
@@ -11,29 +13,40 @@ interface Props extends TimeFrameData {
 
 interface State {
     isExpanded: boolean;
+    isExpandedDoneTodos: boolean;
+    todos: Todo[];
 }
 
-export class TimeFrameItemUI extends React.PureComponent<Props, State> {
+export class TimeFrameItemUI extends React.Component<Props, State> {
     isExpanded = () => this.props.isCurrentTimeFrame();
 
     state = {
         isExpanded: this.isExpanded(),
+        isExpandedDoneTodos: false,
+        todos: this.props.todos,
     };
 
     height = 0;
 
     getTags = () => this.props.tags.join(", ");
-    getTodos = () => this.props.todos;
+    getDoneTodos = () => this.props.todos.filter((todo) => todo.isChecked);
+    getUndoneTodos = () => this.props.todos.filter((todo) => !todo.isChecked);
     getTimeRange = () => this.props.getStartTime() + " - " + this.props.getEndTime();
-
-    doNothing = () => {
-        console.log("Toggle nothing!");
-    };
 
     toggleExpandState = () => {
         this.setState((prevState) => {
             return {isExpanded: !prevState.isExpanded};
         });
+    };
+
+    toggleDoneTodos = () => {
+        this.setState((prevState) => {
+            return {isExpandedDoneTodos: !prevState.isExpandedDoneTodos};
+        });
+    }
+
+    doNothing = () => {
+        console.log("Toggle nothing!");
     };
 
     render = () => (
@@ -48,12 +61,11 @@ export class TimeFrameItemUI extends React.PureComponent<Props, State> {
                     <Text style={styles.timeRange}>{this.getTimeRange()}</Text>
                 </View>
                 <ToolbarButtonUI
-                    style={{}}
                     icon={this.state.isExpanded ? "chevron-up" : "chevron-down"}
                     onPress={this.toggleExpandState}/>
             </View>
 
-            {this.renderTaskDetails()}
+            {this.state.isExpanded && this.renderTaskDetails()}
 
             <View style={styles.buttonsContainer}>
                 <ToggleButtonUI style={styles.button} icon={"alarm"} onToggle={this.doNothing}/>
@@ -67,17 +79,44 @@ export class TimeFrameItemUI extends React.PureComponent<Props, State> {
         </View>
     );
 
+    onTodoStateChanged = () => {
+        this.setState({todos: this.props.todos})
+    }
+
     renderTaskDetails = () => (
-        <View style={[styles.fill, {display: this.state.isExpanded ? "flex" : "none"}]}>
-            {this.getTodos().map((todo) => (
-                <TodoUI key={todo.key} style={styles.todo} todo={todo}/>
+        <View style={[styles.fill]}>
+            {this.getUndoneTodos().map((todo) => (
+                <TodoUI
+                    style={styles.todo}
+                    key={todo.key}
+                    todo={todo}
+                    onTodoStateChanged={this.onTodoStateChanged}/>
             ))}
+
+            <View style={styles.fill}>
+                <Pressable style={styles.doneHeaderContainer} onPress={this.toggleDoneTodos}>
+                    <Icon style={styles.doneHeaderIcon}
+                          name={this.state.isExpandedDoneTodos ? "chevron-up" : "chevron-down"}
+                          type={"material-community"}
+                          color={AppColors.textColorDarker}/>
+                    <Text style={styles.doneHeader}>{`${this.getDoneTodos().length} Completed Todos`}</Text>
+                </Pressable>
+
+                {this.state.isExpandedDoneTodos && this.getDoneTodos().map((todo) => (
+                    <TodoUI
+                        style={styles.todo}
+                        key={todo.key}
+                        todo={todo}
+                        onTodoStateChanged={this.onTodoStateChanged}/>
+                ))}
+            </View>
         </View>
+
     );
 }
 
 const styles = StyleSheet.create({
-    fill: {flex: 1},
+    fill: {flex: 1, alignSelf: "stretch"},
     header: {flex: 1, flexDirection: "row"},
     headerLeft: {flex: 1, alignSelf: "stretch"},
     title: {
@@ -96,11 +135,7 @@ const styles = StyleSheet.create({
     },
     todo: {
         flex: 1,
-        margin: 2,
-        textAlignVertical: "center",
         marginHorizontal: 8,
-        fontSize: 16,
-        color: "#eee",
     },
     buttonsContainer: {
         alignSelf: "stretch",
@@ -111,4 +146,19 @@ const styles = StyleSheet.create({
         zIndex: 10,
         alignSelf: "center",
     },
+    doneHeaderContainer: {
+        alignContent: "center",
+        flexDirection: "row",
+        marginTop: 16,
+        margin: 8,
+    },
+    doneHeader: {
+        color: AppColors.textColorDarker,
+        textAlignVertical: "center",
+        fontSize: 18,
+    },
+    doneHeaderIcon: {
+        margin: 4,
+    }
+
 });

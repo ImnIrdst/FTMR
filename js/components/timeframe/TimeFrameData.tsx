@@ -12,6 +12,10 @@ export class Todo {
         this.text = text;
         this.isChecked = isChecked;
     }
+
+    public toString = () : string => {
+        return JSON.stringify(this)
+    }
 }
 
 export class TimeFrameData {

@@ -6,4 +6,5 @@ export const AppColors = {
     backgroundLight: MaterialColors.grey900,
     backgroundLighter: MaterialColors.grey800,
     textColor: MaterialColors.grey100,
+    textColorDarker: MaterialColors.grey400,
 };

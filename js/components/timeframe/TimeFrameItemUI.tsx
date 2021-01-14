@@ -61,6 +61,8 @@ export class TimeFrameItemUI extends React.PureComponent<Props, State> {
                 <ToggleButtonUI style={styles.button} icon={"tag-multiple-outline"} onToggle={this.doNothing}/>
                 <ToggleButtonUI style={styles.button} icon={"pencil-outline"} onToggle={this.doNothing}/>
                 <ToggleButtonUI style={styles.button} icon={"alert-octagon-outline"} onToggle={this.doNothing}/>
+                <ToggleButtonUI style={styles.button} icon={"arrow-collapse-vertical"} onToggle={this.doNothing}/>
+                <ToggleButtonUI style={styles.button} icon={"arrow-expand-vertical"} onToggle={this.doNothing}/>
             </View>
         </View>
     );

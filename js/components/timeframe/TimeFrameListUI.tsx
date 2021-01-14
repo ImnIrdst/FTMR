@@ -1,8 +1,8 @@
-import React, {createRef} from "react";
+import React, {createRef, RefObject} from "react";
 import {StyleSheet, View, ViewStyle, Animated} from "react-native";
 import {TimeFrameItemUI} from "./TimeFrameItemUI";
 import {ScrollView} from "react-native-gesture-handler";
-import {TimeFrameData} from "./TimeFrameData";
+import {compareTimeFrames, TimeFrameData} from "./TimeFrameData";
 import {AppColors} from "../../resources/Colors";
 
 interface Props {
@@ -14,11 +14,21 @@ interface Props {
 }
 
 export class TimeFrameListUI extends React.Component<Props> {
+
     scrollViewRef = createRef<ScrollView>();
-    timeFrameItemsRef: { [k: string]: TimeFrameItemUI | null } = {};
+
+    timeFrameItemsRef: {
+        [k: string]: RefObject<TimeFrameItemUI>
+    } = {};
 
     state = {
         scrollViewAnimatedEvent: undefined
+    }
+
+    constructor(props: Props) {
+        super(props);
+
+        this.getTimeFrames().map(timeFrame => this.timeFrameItemsRef[timeFrame.key] = createRef())
     }
 
     setAnimatedScrollY = () => {
@@ -43,22 +53,21 @@ export class TimeFrameListUI extends React.Component<Props> {
     scrollToToday = () => {
         let sum = 0;
         for (let i = 0; i < this.getTimeFrames().length; i++) {
-            const timeFrame = this.timeFrameItemsRef[i]
+
+            const timeFrame = this.timeFrameItemsRef[i].current
 
             if (timeFrame === null) continue;
 
+            sum += timeFrame.height + 16;
             if (timeFrame.isExpanded()) {
                 break;
             }
-
-            sum += timeFrame.height + 16;
         }
 
         this.scrollViewRef.current?.scrollTo({x: 0, y: sum, animated: true});
-        setTimeout(()=> {
+        setTimeout(() => {
             this.setAnimatedScrollY()
         }, 1000)
-
     }
 
     render = () => (
@@ -71,14 +80,18 @@ export class TimeFrameListUI extends React.Component<Props> {
                 }}
                 onScroll={this.state.scrollViewAnimatedEvent}
                 onContentSizeChange={this.scrollToToday}>
-                {this.getTimeFrames().map((timeFrame) => this.renderItem(timeFrame))}
+                {
+                    this.getTimeFrames()
+                        .sort(compareTimeFrames)
+                        .map((timeFrame) => this.renderItem(timeFrame))
+                }
             </ScrollView>
         </View>
     );
 
     renderItem = (item: TimeFrameData) => (
         <TimeFrameItemUI
-            ref={(el) => (this.timeFrameItemsRef[item.key] = el)}
+            ref={this.timeFrameItemsRef[item.key]}
             style={styles.itemContainer}
             {...item}
         />

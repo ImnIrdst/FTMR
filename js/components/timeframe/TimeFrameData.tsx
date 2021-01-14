@@ -1,6 +1,7 @@
 import moment from "moment-jalaali";
 
 export const timeFrameDurationMinutes = 30;
+
 export class Todo {
     key: number;
     text: string;
@@ -12,6 +13,7 @@ export class Todo {
         this.isChecked = isChecked;
     }
 }
+
 export class TimeFrameData {
     key: string;
     tags: string[];
@@ -32,3 +34,5 @@ export class TimeFrameData {
     getStartTime = () => this.date.format("HH:mm");
     getEndTime = () => this.date.add(timeFrameDurationMinutes, "minutes").format("HH:mm");
 }
+
+export const compareTimeFrames = (a: TimeFrameData, b: TimeFrameData) => a.date.diff(b.date, "minute")

@@ -11,7 +11,6 @@ today.toLocaleString();
 const todos: Todo[] = []
 
 let _ = [
-    { text: "- Add expanded and collapsed card state", isChecked: false },
     { text: "- Todo checkboxes", isChecked: false },
     { text: "- Hide done todos", isChecked: false },
     { text: "- card background color", isChecked: false },
@@ -34,6 +33,8 @@ let _ = [
     { text: "- Create day component", isChecked: true },
     { text: "- Add next and previous date button", isChecked: true },
     { text: "- Change timer play icon state to repeat", isChecked: true },
+    { text: "- Add expanded and collapsed card state", isChecked: true },
+    { text: "- Scroll to today card", isChecked: true },
 ].forEach((element, index) => {
     todos.push(new Todo(index, element.text, element.isChecked));
 });

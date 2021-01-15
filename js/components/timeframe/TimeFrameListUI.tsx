@@ -25,6 +25,8 @@ export class TimeFrameListUI extends React.Component<Props> {
         scrollViewAnimatedEvent: undefined
     }
 
+    scrollToTodayFinished = false
+
     constructor(props: Props) {
         super(props);
 
@@ -51,6 +53,10 @@ export class TimeFrameListUI extends React.Component<Props> {
     getTimeFrames = () => this.props.timeFrames;
 
     scrollToToday = () => {
+        if (this.scrollToTodayFinished) {
+            return
+        }
+
         let sum = 0;
         for (let i = 0; i < this.getTimeFrames().length; i++) {
 
@@ -65,6 +71,7 @@ export class TimeFrameListUI extends React.Component<Props> {
         }
 
         this.scrollViewRef.current?.scrollTo({x: 0, y: sum, animated: true});
+        this.scrollToTodayFinished = true
         setTimeout(() => {
             this.setAnimatedScrollY()
         }, 1000)

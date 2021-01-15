@@ -1,5 +1,6 @@
 import moment from "moment-jalaali";
-import {TimeFrameData, Todo, timeFrameDurationMinutes} from "../components/timeframe/TimeFrameData";
+import {TimeFrameData, TodoData, timeFrameDurationMinutes, TagData} from "../components/timeframe/TimeFrameData";
+import {AppColors} from "../resources/Colors";
 
 const today = new Date();
 today.getTimezoneOffset();
@@ -8,10 +9,10 @@ today.setMinutes(0);
 today.setSeconds(0);
 today.toLocaleString();
 
-const todos: Todo[] = []
+const todos: TodoData[] = []
 
 let todosWithoutKey = [
-    {text: "card background color", isChecked: false},
+    {text: "Card background color", isChecked: false},
     {text: "Add current time indicator", isChecked: false},
     {text: "Restructure the app", isChecked: false}, // https://cheesecakelabs.com/blog/efficient-way-structure-react-native-projects/
     {text: "Navigate to tag selection screen", isChecked: false},
@@ -36,16 +37,31 @@ let todosWithoutKey = [
     {text: "Add merge and split buttons", isChecked: true},
     {text: "Todo checkboxes", isChecked: true},
     {text: "Hide done todos", isChecked: true},
+    {text: "Fix scroll when done todos are collapsed", isChecked: true},
 ]
 todosWithoutKey.forEach((element, index) => {
-    todos.push(new Todo(index, element.text, element.isChecked));
+    todos.push(new TodoData(index, element.text, element.isChecked));
 });
+
+const tags: TagData[] = [
+    {title: "red", backgroundColor: AppColors.tagColors.red},
+    {title: "pink", backgroundColor: AppColors.tagColors.pink},
+    {title: "purple", backgroundColor: AppColors.tagColors.purple},
+    {title: "lightBlue", backgroundColor: AppColors.tagColors.lightBlue},
+    {title: "teal", backgroundColor: AppColors.tagColors.teal},
+    {title: "green", backgroundColor: AppColors.tagColors.green},
+    {title: "lime", backgroundColor: AppColors.tagColors.lime},
+    {title: "amber", backgroundColor: AppColors.tagColors.amber},
+    {title: "deepOrange", backgroundColor: AppColors.tagColors.deepOrange},
+    {title: "brown", backgroundColor: AppColors.tagColors.brown},
+    {title: "blueGrey", backgroundColor: AppColors.tagColors.blueGrey},
+]
 
 
 export const mockTimeFrames: TimeFrameData[] = []
 
-for (let i = 0; i < 48; i++) {
+for (let i = 0; i < 12; i++) {
     const date = moment(new Date(today));
     date.add(i * timeFrameDurationMinutes, "minute");
-    mockTimeFrames.push(new TimeFrameData(i.toString(), ["Tag1, Tag2"], date, todos));
+    mockTimeFrames.push(new TimeFrameData(i.toString(), [tags[i % tags.length]], date, todos));
 }

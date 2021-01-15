@@ -52,8 +52,8 @@ export class TimeFrameData {
     getEndTime = () => this.endDate.format("HH:mm");
     getTimeRange = () => `${this.getStartTime()} - ${this.getEndTime()}`
 
-    toString() {
-        return `${this.key} ${this.getStartTime()} - ${this.getEndTime()}`
+    toString = () => {
+        return `${this.key} ${this.getTimeRange()}`
     }
 }
 

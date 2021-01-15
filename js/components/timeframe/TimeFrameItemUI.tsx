@@ -1,5 +1,5 @@
 import React from "react";
-import {Pressable, StyleSheet, Text, View, ViewStyle} from "react-native";
+import {LayoutChangeEvent, Pressable, StyleSheet, Text, View, ViewStyle} from "react-native";
 import {TimeFrameData, TodoData} from "./TimeFrameData";
 import {ToggleButtonUI} from "../button/ToggleButtonUI";
 import {TodoUI} from "./TodoUI";
@@ -16,6 +16,7 @@ interface State {
     isExpanded: boolean;
     isExpandedDoneTodos: boolean;
     todos: TodoData[];
+    indicator: number
 }
 
 export class TimeFrameItemUI extends React.Component<Props, State> {
@@ -25,27 +26,47 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
         isExpanded: this.isExpanded(),
         isExpandedDoneTodos: false,
         todos: this.props.todos,
+        indicator: 0,
     };
 
     height = 0;
 
-    getTags = () => this.props.tags.map((tag) => tag.title).join(", ");
-    getCardBackgroundPassed = () => {
-        if (this.props.endDate.valueOf() < moment().valueOf()) {
-            return StyleSheet.create({
-                grayShade: {
-                    position: "absolute",
-                    backgroundColor: "rgba(0,0,0,0.6)",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    zIndex: 100,
-                }
+    timeFrame = this.props as TimeFrameData
 
-            }).grayShade
+    onLayout = (event: LayoutChangeEvent) => {
+        this.height = event.nativeEvent.layout.height;
+
+        let s: number
+        if (this.props.endDate.valueOf() < moment().valueOf()) {
+            s = this.height
+        } else if (moment().valueOf() < this.props.startDate.valueOf()) {
+            s = 0
+        } else {
+            const passedTime = moment().valueOf() - this.props.startDate.valueOf()
+            const timeDiff = this.props.endDate.valueOf() - this.props.startDate.valueOf()
+            const ratio = passedTime / timeDiff
+
+            s = this.height * ratio
         }
-        return {}
+        this.setState({indicator: s})
+    }
+
+    getTags = () => this.props.tags.map((tag) => tag.title).join(", ");
+
+    getCardBackgroundPassed = () => {
+
+        return StyleSheet.create({
+            grayShade: {
+                position: "absolute",
+                backgroundColor: "rgba(0,0,0,0.6)",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: this.state.indicator,
+                zIndex: -1,
+            }
+
+        }).grayShade
     }
 
     getCardBackgroundNotPassed = () => {
@@ -79,9 +100,7 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
     render = () => (
         <View
             style={[this.props.style, this.getCardBackgroundNotPassed()]}
-            onLayout={(event) => {
-                this.height = event.nativeEvent.layout.height;
-            }}>
+            onLayout={this.onLayout}>
 
             <View style={styles.header}>
                 <View style={styles.headerLeft}>

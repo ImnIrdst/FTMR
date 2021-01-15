@@ -1,8 +1,19 @@
 import moment from "moment-jalaali";
+import {TagColor} from "../../resources/Colors";
 
-export const timeFrameDurationMinutes = 30;
+export const timeFrameDurationMinutes = 120;
 
-export class Todo {
+export class TagData {
+    title: string;
+    backgroundColor: TagColor;
+
+    constructor(title: string, backgroundColor: TagColor) {
+        this.title = title;
+        this.backgroundColor = backgroundColor;
+    }
+}
+
+export class TodoData {
     key: number;
     text: string;
     isChecked: boolean;
@@ -20,11 +31,11 @@ export class Todo {
 
 export class TimeFrameData {
     key: string;
-    tags: string[];
+    tags: TagData[];
     date: moment.Moment;
-    todos: Todo[];
+    todos: TodoData[];
 
-    constructor(key: string, tags: string[], date: moment.Moment, todos: Todo[]) {
+    constructor(key: string, tags: TagData[], date: moment.Moment, todos: TodoData[]) {
         this.key = key;
         this.tags = tags;
         this.date = date;
@@ -33,7 +44,7 @@ export class TimeFrameData {
 
     isCurrentTimeFrame = () => {
         const diff = moment().diff(this.date, "minute");
-        return 0 <= diff && diff < 30;
+        return 0 <= diff && diff < timeFrameDurationMinutes;
     };
     getStartTime = () => this.date.format("HH:mm");
     getEndTime = () => this.date.add(timeFrameDurationMinutes, "minutes").format("HH:mm");

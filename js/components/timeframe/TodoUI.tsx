@@ -1,12 +1,12 @@
 import React from "react";
 import {Pressable, StyleSheet, Text, View, ViewStyle} from "react-native";
-import {Todo} from "./TimeFrameData";
+import {TodoData} from "./TimeFrameData";
 import CheckBox from "@react-native-community/checkbox";
 import {AppColors} from "../../resources/Colors";
 
 interface Props {
     style: ViewStyle;
-    todo: Todo;
+    todo: TodoData;
     onTodoStateChanged: () => void;
 }
 

@@ -12,7 +12,7 @@ today.toLocaleString();
 const todos: TodoData[] = []
 
 let todosWithoutKey = [
-    {text: "Card background color", isChecked: false},
+
     {text: "Add current time indicator", isChecked: false},
     {text: "Restructure the app", isChecked: false}, // https://cheesecakelabs.com/blog/efficient-way-structure-react-native-projects/
     {text: "Navigate to tag selection screen", isChecked: false},
@@ -38,6 +38,7 @@ let todosWithoutKey = [
     {text: "Todo checkboxes", isChecked: true},
     {text: "Hide done todos", isChecked: true},
     {text: "Fix scroll when done todos are collapsed", isChecked: true},
+    {text: "Add Card background color", isChecked: true},
 ]
 todosWithoutKey.forEach((element, index) => {
     todos.push(new TodoData(index, element.text, element.isChecked));

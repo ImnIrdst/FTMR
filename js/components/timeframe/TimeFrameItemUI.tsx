@@ -1,6 +1,6 @@
 import React from "react";
 import {Pressable, StyleSheet, Text, View, ViewStyle} from "react-native";
-import {TimeFrameData, Todo} from "./TimeFrameData";
+import {TimeFrameData, TodoData} from "./TimeFrameData";
 import {ToggleButtonUI} from "../button/ToggleButtonUI";
 import {TodoUI} from "./TodoUI";
 import {ToolbarButtonUI} from "../button/ToolbarButtonUI";
@@ -14,7 +14,7 @@ interface Props extends TimeFrameData {
 interface State {
     isExpanded: boolean;
     isExpandedDoneTodos: boolean;
-    todos: Todo[];
+    todos: TodoData[];
 }
 
 export class TimeFrameItemUI extends React.Component<Props, State> {
@@ -28,7 +28,19 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
 
     height = 0;
 
-    getTags = () => this.props.tags.join(", ");
+    getTags = () => this.props.tags.map((tag) => tag.title).join(", ");
+    getCardBackgroundPassed = () => StyleSheet.create({
+        cardBackground: {
+            backgroundColor: this.props.tags[0].backgroundColor.inactive
+        }
+    }).cardBackground
+
+    getCardBackgroundNotPassed = () => StyleSheet.create({
+        cardBackground: {
+            backgroundColor: this.props.tags[0].backgroundColor.active
+        }
+    }).cardBackground
+
     getDoneTodos = () => this.props.todos.filter((todo) => todo.isChecked);
     getUndoneTodos = () => this.props.todos.filter((todo) => !todo.isChecked);
     getTimeRange = () => this.props.getStartTime() + " - " + this.props.getEndTime();
@@ -51,7 +63,7 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
 
     render = () => (
         <View
-            style={[this.props.style]}
+            style={[this.props.style, this.getCardBackgroundNotPassed()]}
             onLayout={(event) => {
                 this.height = event.nativeEvent.layout.height;
             }}>

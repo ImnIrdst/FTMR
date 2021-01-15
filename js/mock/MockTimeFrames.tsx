@@ -1,5 +1,10 @@
 import moment from "moment-jalaali";
-import {TimeFrameData, TodoData, timeFrameDurationMinutes, TagData} from "../components/timeframe/TimeFrameData";
+import {
+    TimeFrameData,
+    TodoData,
+    timeFrameDurationMinutes,
+    TagData
+} from "../components/timeframe/TimeFrameData";
 import {AppColors} from "../resources/Colors";
 
 const today = new Date();
@@ -12,7 +17,6 @@ today.toLocaleString();
 const todos: TodoData[] = []
 
 let todosWithoutKey = [
-
     {text: "Add current time indicator", isChecked: false},
     {text: "Restructure the app", isChecked: false}, // https://cheesecakelabs.com/blog/efficient-way-structure-react-native-projects/
     {text: "Navigate to tag selection screen", isChecked: false},
@@ -62,7 +66,7 @@ const tags: TagData[] = [
 export const mockTimeFrames: TimeFrameData[] = []
 
 for (let i = 0; i < 12; i++) {
-    const date = moment(new Date(today));
-    date.add(i * timeFrameDurationMinutes, "minute");
-    mockTimeFrames.push(new TimeFrameData(i.toString(), [tags[i % tags.length]], date, todos));
+    const startDate = moment(new Date(today)).add(i * timeFrameDurationMinutes, "minute");
+    const endDate = moment(startDate).add(timeFrameDurationMinutes, "minute")
+    mockTimeFrames.push(new TimeFrameData(i.toString(), [tags[i % tags.length]], startDate, endDate, todos));
 }

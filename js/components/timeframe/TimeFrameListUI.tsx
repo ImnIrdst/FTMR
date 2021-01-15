@@ -2,8 +2,8 @@ import React, {createRef, RefObject} from "react";
 import {StyleSheet, View, ViewStyle, Animated} from "react-native";
 import {TimeFrameItemUI} from "./TimeFrameItemUI";
 import {ScrollView} from "react-native-gesture-handler";
-import {compareTimeFrames, TimeFrameData} from "./TimeFrameData";
 import {AppColors} from "../../resources/Colors";
+import {TimeFrameData} from "./TimeFrameData";
 
 interface Props {
     style: ViewStyle;
@@ -64,10 +64,10 @@ export class TimeFrameListUI extends React.Component<Props> {
 
             if (timeFrame === null) continue;
 
-            sum += timeFrame.height + 16;
             if (timeFrame.isExpanded()) {
                 break;
             }
+            sum += timeFrame.height + 16;
         }
 
         this.scrollViewRef.current?.scrollTo({x: 0, y: sum, animated: true});
@@ -89,7 +89,6 @@ export class TimeFrameListUI extends React.Component<Props> {
                 onContentSizeChange={this.scrollToToday}>
                 {
                     this.getTimeFrames()
-                        .sort(compareTimeFrames)
                         .map((timeFrame) => this.renderItem(timeFrame))
                 }
             </ScrollView>

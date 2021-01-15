@@ -6,6 +6,7 @@ import {TodoUI} from "./TodoUI";
 import {ToolbarButtonUI} from "../button/ToolbarButtonUI";
 import {AppColors} from "../../resources/Colors";
 import {Icon} from "react-native-elements";
+import moment from "moment-jalaali";
 
 interface Props extends TimeFrameData {
     style: ViewStyle;
@@ -29,17 +30,31 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
     height = 0;
 
     getTags = () => this.props.tags.map((tag) => tag.title).join(", ");
-    getCardBackgroundPassed = () => StyleSheet.create({
-        cardBackground: {
-            backgroundColor: this.props.tags[0].backgroundColor.inactive
-        }
-    }).cardBackground
+    getCardBackgroundPassed = () => {
+        if (this.props.endDate.valueOf() < moment().valueOf()) {
+            return StyleSheet.create({
+                grayShade: {
+                    position: "absolute",
+                    backgroundColor: "rgba(0,0,0,0.6)",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    zIndex: 100,
+                }
 
-    getCardBackgroundNotPassed = () => StyleSheet.create({
-        cardBackground: {
-            backgroundColor: this.props.tags[0].backgroundColor.active
+            }).grayShade
         }
-    }).cardBackground
+        return {}
+    }
+
+    getCardBackgroundNotPassed = () => {
+        return StyleSheet.create({
+            cardBackground: {
+                backgroundColor: this.props.tags[0].backgroundColor.active
+            }
+        }).cardBackground
+    }
 
     getDoneTodos = () => this.props.todos.filter((todo) => todo.isChecked);
     getUndoneTodos = () => this.props.todos.filter((todo) => !todo.isChecked);
@@ -67,6 +82,7 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
             onLayout={(event) => {
                 this.height = event.nativeEvent.layout.height;
             }}>
+
             <View style={styles.header}>
                 <View style={styles.headerLeft}>
                     <Text style={styles.title}>{this.getTags()}</Text>
@@ -88,6 +104,7 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
                 <ToggleButtonUI style={styles.button} icon={"arrow-collapse-vertical"} onToggle={this.doNothing}/>
                 <ToggleButtonUI style={styles.button} icon={"arrow-expand-vertical"} onToggle={this.doNothing}/>
             </View>
+            <View style={this.getCardBackgroundPassed()}/>
         </View>
     );
 

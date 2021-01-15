@@ -32,22 +32,31 @@ export class TodoData {
 export class TimeFrameData {
     key: string;
     tags: TagData[];
-    date: moment.Moment;
+    startDate: moment.Moment;
+    endDate: moment.Moment;
     todos: TodoData[];
 
-    constructor(key: string, tags: TagData[], date: moment.Moment, todos: TodoData[]) {
+    constructor(key: string, tags: TagData[], startDate: moment.Moment, endDate: moment.Moment, todos: TodoData[]) {
         this.key = key;
         this.tags = tags;
-        this.date = date;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.todos = todos;
     }
 
     isCurrentTimeFrame = () => {
-        const diff = moment().diff(this.date, "minute");
+        const diff = moment().diff(this.startDate, "minute");
         return 0 <= diff && diff < timeFrameDurationMinutes;
     };
-    getStartTime = () => this.date.format("HH:mm");
-    getEndTime = () => this.date.add(timeFrameDurationMinutes, "minutes").format("HH:mm");
+    getStartTime = () => this.startDate.format("HH:mm");
+    getEndTime = () => this.endDate.format("HH:mm");
+    getTimeRange = () => `${this.getStartTime()} - ${this.getEndTime()}`
+
+    toString() {
+        return `${this.key} ${this.getStartTime()} - ${this.getEndTime()}`
+    }
 }
 
-export const compareTimeFrames = (a: TimeFrameData, b: TimeFrameData) => a.date.diff(b.date, "minute")
+export const compareTimeFrames = (a: TimeFrameData, b: TimeFrameData) => {
+    return a.startDate.valueOf() - b.startDate.valueOf()
+}

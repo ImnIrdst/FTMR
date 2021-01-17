@@ -1,6 +1,4 @@
-export const currentTimeMilies = () => {
-    return new Date().getTime();
-};
+import moment from "moment-jalaali";
 
 export const addLeadingZeros = (num: number) => {
     let str = num.toString();
@@ -8,8 +6,8 @@ export const addLeadingZeros = (num: number) => {
     else return str;
 };
 
-export const formatEpoch = (epoch: number) => {
-    let seconds = Math.round(epoch / 1000);
-    let minutes = Math.round(seconds / 60);
+export const formatEpoch = (start: moment.Moment, end:moment.Moment) => {
+    let seconds = moment(end).diff(start, "seconds");
+    let minutes = moment(end).diff(start, "minutes");
     return `${addLeadingZeros(minutes)}:${addLeadingZeros(seconds % 60)}`;
 };

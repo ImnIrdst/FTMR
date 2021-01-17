@@ -1,9 +1,9 @@
-import { transform } from "@babel/core";
 import React from "react";
-import { StyleSheet, Text, View, Button, ViewStyle, Animated } from "react-native";
-import { IconButton } from "react-native-paper";
-import { AppColors } from "../../resources/Colors";
-import { formatEpoch, currentTimeMilies } from "../../utils/TimeUtils";
+import {StyleSheet, Text, ViewStyle, Animated} from "react-native";
+import {IconButton} from "react-native-paper";
+import {AppColors} from "../../resources/Colors";
+import {formatEpoch} from "../../utils/TimeUtils";
+import moment from "moment-jalaali";
 
 interface Props {
     style: ViewStyle;
@@ -11,30 +11,50 @@ interface Props {
     onTimerFinished: () => void;
 }
 
+interface State {
+    startTime: moment.Moment;
+    currentTime: moment.Moment;
+    endTime: moment.Moment;
+}
+
 export const bottomBarHeight = 82;
 
-export class CountDownTimer extends React.Component<Props> {
+export class CountDownTimer extends React.Component<Props, State> {
     interval: any;
-    startTime = -1;
-    duration = 5000;
+    duration = 5;
 
-    state = {
-        currentTime: this.duration,
-    };
+    constructor(props: Props) {
+        super(props);
+
+        this.state = this.initState()
+    }
+
+    initState = () => {
+        return {
+            startTime: moment().milliseconds(0), // TODO: read this from storage
+            currentTime: moment().milliseconds(0),
+            endTime: moment().add(this.duration, "seconds").milliseconds(0), // TODO: read this from storage
+        };
+    }
+
+    resetState = () => {
+        this.setState(this.initState())
+    }
 
     getScrollTranslation = () => Animated.diffClamp(this.props.scrollY, 0, bottomBarHeight + bottomBarHeight / 2);
 
     startTimer = () => {
-        this.startTime = currentTimeMilies();
-        this.setState({ currentTime: this.duration });
-
+        this.resetState()
         clearInterval(this.interval);
 
         this.interval = setInterval(() => {
-            this.setState({ currentTime: this.state.currentTime - 1000 });
-            if (currentTimeMilies() > this.startTime + this.duration) {
+            const currentTime = moment().milliseconds(0)
+
+            if (moment(this.state.endTime).diff(currentTime, "seconds") < 0) {
                 this.clearTimer();
                 this.props.onTimerFinished();
+            } else {
+                this.setState({currentTime});
             }
         }, 1000);
     };
@@ -44,15 +64,19 @@ export class CountDownTimer extends React.Component<Props> {
     };
 
     clearTimer = () => {
-        this.setState({ currentTime: this.duration });
+        this.resetState()
         clearInterval(this.interval);
     };
 
     render = () => (
         <Animated.View
-            style={[this.props.style, styles.container, { transform: [{ translateY: this.getScrollTranslation() }] }]}
-        >
-            <Text style={styles.body}>{formatEpoch(this.state.currentTime)}</Text>
+            style={[
+                this.props.style,
+                styles.container,
+                {transform: [{translateY: this.getScrollTranslation()}]}
+            ]}>
+
+            <Text style={styles.body}>{formatEpoch(this.state.currentTime, this.state.endTime)}</Text>
             <IconButton
                 icon={"play"}
                 onPress={this.startTimer}

@@ -21,7 +21,7 @@ export const bottomBarHeight = 82;
 
 export class CountDownTimer extends React.Component<Props, State> {
     interval: any;
-    duration = 5;
+    duration = 10;
 
     constructor(props: Props) {
         super(props);

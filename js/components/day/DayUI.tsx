@@ -14,9 +14,24 @@ interface Props {
     scrollY: Animated.Value;
 }
 
-export class DayUI extends React.Component<Props> {
+interface State {
+    currentTime: moment.Moment
+}
+
+export class DayUI extends React.Component<Props, State> {
 
     listRef = createRef<TimeFrameListUI>()
+
+    state = {
+        currentTime: moment()
+    }
+
+
+    prevScrollY = 0
+    interval = setInterval(() => {
+        this.setState({currentTime: moment()})
+    }, 1000)
+
     getHeaderTranslation = () => {
         const diffClamp = Animated.diffClamp(this.props.scrollY, 0, headerHeight);
         return Animated.multiply(-1, diffClamp);
@@ -40,6 +55,20 @@ export class DayUI extends React.Component<Props> {
         this.listRef.current?.forceScrollToToday()
     }
 
+    componentWillUnmount() {
+        clearInterval(this.interval)
+    }
+
+    shouldComponentUpdate(nextProps: Readonly<Props>, nextState: Readonly<State>, nextContext: any): boolean {
+        const curScrollY = Number.parseInt(JSON.stringify(nextProps.scrollY))
+
+        let shouldUpdate = curScrollY === this.prevScrollY
+
+        this.prevScrollY = curScrollY
+
+        return shouldUpdate
+    }
+
     render = () => (
         <View style={[this.props.style, styles.container]}>
             <Animated.View style={[styles.headerContainer, this.getHeaderTranslationStyle()]}>
@@ -48,7 +77,7 @@ export class DayUI extends React.Component<Props> {
                     <Text style={styles.gregorianDate}>{this.getGregorianDate()}</Text>
                     <Text style={styles.jalaaliDate}>{this.getJalaaliDate()}</Text>
                     <TouchableHighlight onPress={this.onGoToTodayClicked}>
-                        <Text style={styles.todayButton}>Go to current time</Text>
+                        <Text style={styles.todayButton}>{this.state.currentTime.format("HH:mm:ss")}</Text>
                     </TouchableHighlight>
                 </View>
                 <ToolbarButtonUI style={styles.headerIcons} icon={"chevron-right"} onPress={this.onNextDayPress}/>
@@ -98,9 +127,10 @@ const styles = StyleSheet.create({
     },
     todayButton: {
         fontSize: 16,
+        fontWeight: "bold",
         color: AppColors.textColor,
         textAlign: "center",
-        borderWidth: 1,
+        borderWidth: 2,
         margin: 16,
         padding: 8,
         borderRadius: 16,

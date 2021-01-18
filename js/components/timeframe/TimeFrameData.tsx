@@ -46,7 +46,7 @@ export class TimeFrameData {
 
     isCurrentTimeFrame = () => {
         const diff = moment().diff(this.startDate, "minute");
-        return 0 <= diff && diff < timeFrameDurationMinutes;
+        return 0 <= diff && diff < moment(this.endDate).diff(this.startDate, "minute");
     };
     getStartTime = () => this.startDate.format("HH:mm");
     getEndTime = () => this.endDate.format("HH:mm");

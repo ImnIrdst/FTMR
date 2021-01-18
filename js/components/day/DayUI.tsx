@@ -1,13 +1,13 @@
-import React from "react";
+import React, {createRef} from "react";
 import moment from "moment-jalaali";
-import {StyleSheet, View, Text, Animated, ViewStyle} from "react-native";
+import {StyleSheet, View, Text, Animated, ViewStyle, TouchableHighlight} from "react-native";
 import {mockTimeFrames} from "../../mock/MockTimeFrames";
 import {bottomBarHeight} from "../timer/CountDownTimer";
 import {TimeFrameListUI} from "../timeframe/TimeFrameListUI";
 import {AppColors} from "../../resources/Colors";
 import {ToolbarButtonUI} from "../button/ToolbarButtonUI";
 
-export const headerHeight = 128;
+export const headerHeight = 156;
 
 interface Props {
     style: ViewStyle;
@@ -15,6 +15,8 @@ interface Props {
 }
 
 export class DayUI extends React.Component<Props> {
+
+    listRef = createRef<TimeFrameListUI>()
     getHeaderTranslation = () => {
         const diffClamp = Animated.diffClamp(this.props.scrollY, 0, headerHeight);
         return Animated.multiply(-1, diffClamp);
@@ -34,6 +36,10 @@ export class DayUI extends React.Component<Props> {
     onNextDayPress = () => {
     };
 
+    onGoToTodayClicked = () => {
+        this.listRef.current?.forceScrollToToday()
+    }
+
     render = () => (
         <View style={[this.props.style, styles.container]}>
             <Animated.View style={[styles.headerContainer, this.getHeaderTranslationStyle()]}>
@@ -41,11 +47,15 @@ export class DayUI extends React.Component<Props> {
                 <View style={styles.dateContainer}>
                     <Text style={styles.gregorianDate}>{this.getGregorianDate()}</Text>
                     <Text style={styles.jalaaliDate}>{this.getJalaaliDate()}</Text>
+                    <TouchableHighlight onPress={this.onGoToTodayClicked}>
+                        <Text style={styles.todayButton}>Go to current time</Text>
+                    </TouchableHighlight>
                 </View>
                 <ToolbarButtonUI style={styles.headerIcons} icon={"chevron-right"} onPress={this.onNextDayPress}/>
             </Animated.View>
 
             <TimeFrameListUI
+                ref={this.listRef}
                 style={styles.todosContainer}
                 timeFrames={mockTimeFrames}
                 scrollX={this.props.scrollY}
@@ -85,6 +95,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: AppColors.textColor,
         textAlign: "center",
+    },
+    todayButton: {
+        fontSize: 16,
+        color: AppColors.textColor,
+        textAlign: "center",
+        borderWidth: 1,
+        margin: 16,
+        padding: 8,
+        borderRadius: 16,
+        borderColor: AppColors.textColor
     },
     headerIcons: {},
     todosContainer: {

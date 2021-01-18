@@ -43,6 +43,7 @@ let todosWithoutKey = [
     {text: "Fix scroll when done todos are collapsed", isChecked: true},
     {text: "Add Card background color", isChecked: true},
     {text: "Add current time indicator", isChecked: true},
+    {text: "Go to current timeframe", isChecked: true},
 ]
 todosWithoutKey.forEach((element, index) => {
     todos.push(new TodoData(index, element.text, element.isChecked));

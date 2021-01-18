@@ -34,6 +34,7 @@ export class TimeFrameListUI extends React.Component<Props> {
     }
 
     setAnimatedScrollY = () => {
+        // noinspection JSSuspiciousNameCombination
         this.setState({
             scrollViewAnimatedEvent: Animated.event(
                 [
@@ -51,6 +52,12 @@ export class TimeFrameListUI extends React.Component<Props> {
     }
 
     getTimeFrames = () => this.props.timeFrames;
+
+
+    forceScrollToToday = () => {
+        this.scrollToTodayFinished = false
+        this.scrollToToday()
+    }
 
     scrollToToday = () => {
         if (this.scrollToTodayFinished) {

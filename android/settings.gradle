@@ -7,3 +7,6 @@ apply from: file("../node_modules/@react-native-community/cli-platform-android/n
 applyNativeModulesSettingsGradle(settings)
 
 include ':app'
+
+include ':ii-react-native-android-local-notification'
+project(':ii-react-native-android-local-notification').projectDir = new File(rootProject.projectDir, '../node_modules/ii-react-native-android-local-notification/android')

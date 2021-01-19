@@ -2,14 +2,11 @@ import React from "react";
 import Constants from "expo-constants";
 import {StatusBar} from "expo-status-bar";
 import {SafeAreaView, StyleSheet, Animated} from "react-native";
-import {sendNotification} from "./js/utils/NotificationUtils";
 import {CountDownTimer} from "./js/components/timer/CountDownTimer";
 import {DayUI} from "./js/components/day/DayUI";
 
 export default class App extends React.Component {
     scrollY = new Animated.Value(0);
-
-    onTimerFinished = () => sendNotification();
 
     componentDidMount() {
         this.scrollY = new Animated.Value(0);
@@ -23,7 +20,6 @@ export default class App extends React.Component {
 
             <CountDownTimer
                 style={styles.timerContainer}
-                onTimerFinished={this.onTimerFinished}
                 scrollY={this.scrollY}/>
         </SafeAreaView>
     );

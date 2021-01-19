@@ -4,11 +4,13 @@ import {IconButton} from "react-native-paper";
 import {AppColors} from "../../resources/Colors";
 import {formatEpoch} from "../../utils/TimeUtils";
 import moment from "moment-jalaali";
+// @ts-ignore
+import Notification from  'ii-react-native-android-local-notification'
+
 
 interface Props {
     style: ViewStyle;
     scrollY: Animated.Value;
-    onTimerFinished: () => void;
 }
 
 interface State {
@@ -21,7 +23,7 @@ export const bottomBarHeight = 82;
 
 export class CountDownTimer extends React.Component<Props, State> {
     interval: any;
-    duration = 10;
+    duration = 5;
 
     constructor(props: Props) {
         super(props);
@@ -47,12 +49,24 @@ export class CountDownTimer extends React.Component<Props, State> {
         this.resetState()
         clearInterval(this.interval);
 
+        Notification.create({
+            id: 1337,
+            subject: 'Ftmr',
+            message: `Timer finished.`,
+            smallIcon: 'notification_icon',
+            autoClear: true,
+            delay: this.duration * 1000,
+            channelId: "timer-end",
+            channelName: "Timer alert",
+            channelDescription: "An alert thrown when timer finishes",
+            payload: { number: 1, what: true, someAnswer: '42' }
+        });
+
         this.interval = setInterval(() => {
             const currentTime = moment().milliseconds(0)
 
             if (moment(this.state.endTime).diff(currentTime, "seconds") < 0) {
                 this.clearTimer();
-                this.props.onTimerFinished();
             } else {
                 this.setState({currentTime});
             }

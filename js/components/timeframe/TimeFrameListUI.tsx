@@ -11,6 +11,7 @@ interface Props {
     bottomPadding: number;
     timeFrames: TimeFrameData[];
     scrollX: Animated.Value;
+    sendMessage?: (message: String) => void;
 }
 
 export class TimeFrameListUI extends React.Component<Props> {
@@ -106,6 +107,7 @@ export class TimeFrameListUI extends React.Component<Props> {
 
     renderItem = (item: TimeFrameData) => (
         <TimeFrameItemUI
+            sendMessage={this.props.sendMessage}
             ref={this.timeFrameItemsRef[item.key]}
             style={styles.itemContainer}
             {...item}

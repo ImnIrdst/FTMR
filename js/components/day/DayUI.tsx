@@ -6,6 +6,7 @@ import {bottomBarHeight} from "../timer/CountDownTimer";
 import {TimeFrameListUI} from "../timeframe/TimeFrameListUI";
 import {AppColors} from "../../resources/Colors";
 import {ToolbarButtonUI} from "../button/ToolbarButtonUI";
+import {Snackbar} from "react-native-paper";
 
 export const headerHeight = 128;
 
@@ -16,6 +17,7 @@ interface Props {
 
 interface State {
     currentTime: moment.Moment
+    snackbarMessage: String,
 }
 
 export class DayUI extends React.Component<Props, State> {
@@ -23,7 +25,8 @@ export class DayUI extends React.Component<Props, State> {
     listRef = createRef<TimeFrameListUI>()
 
     state = {
-        currentTime: moment()
+        currentTime: moment(),
+        snackbarMessage: "",
     }
 
     getHeaderTranslation = () => {
@@ -49,6 +52,14 @@ export class DayUI extends React.Component<Props, State> {
         this.listRef.current?.forceScrollToToday()
     }
 
+    private showMessage = (message: String) => {
+        this.setState({snackbarMessage: message})
+    };
+
+    onDismissSnackBar = () => {
+        this.setState({snackbarMessage: ""})
+    }
+
     render = () => (
         <View style={[this.props.style, styles.container]}>
             <Animated.View style={[styles.headerContainer, this.getHeaderTranslationStyle()]}>
@@ -60,7 +71,22 @@ export class DayUI extends React.Component<Props, State> {
                 <ToolbarButtonUI style={styles.headerIcons} icon={"chevron-right"} onPress={this.onNextDayPress}/>
             </Animated.View>
 
+            {/*// @ts-ignore*/}
+            <Snackbar visible={this.state.snackbarMessage.length !== 0}
+                      duration={Snackbar.DURATION_SHORT} onDismiss={this.onDismissSnackBar} theme={undefined} style={{
+                flex: 1,
+                backgroundColor: AppColors.backgroundLight,
+                justifyContent: "center",
+                alignContent: "center",
+                alignItems: "center",
+                marginHorizontal: 32,
+                marginBottom: bottomBarHeight + 16,
+                // textAlign: "center",
+                // textAlignVertical: "center"
+            }}>{this.state.snackbarMessage}</Snackbar>
+
             <TimeFrameListUI
+                sendMessage={this.showMessage}
                 ref={this.listRef}
                 style={styles.todosContainer}
                 timeFrames={mockTimeFrames}

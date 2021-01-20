@@ -90,6 +90,8 @@ export class TimeFrameData {
     toString = () => {
         return `${this.key} ${this.getTitle()} ${this.getTimeRangeFormatted()}`
     }
+
+    isPassed = () => moment().valueOf() > this.startDate.valueOf()
 }
 
 export const compareTimeFrames = (a: TimeFrameData, b: TimeFrameData) => {

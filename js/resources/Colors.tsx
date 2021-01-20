@@ -22,6 +22,9 @@ export const AppColors = {
 
     darkShade: "rgba(0,0,0,0.6)",
 
+    focusColor: MaterialColors.green500,
+    restColor: MaterialColors.orange500,
+
     tagColors: {
         red: new TagColor(MaterialColors.red900, MaterialColors.red800),
         pink: new TagColor(MaterialColors.pink900, MaterialColors.pink800),
@@ -34,5 +37,5 @@ export const AppColors = {
         deepOrange: new TagColor(MaterialColors.deepOrange900, MaterialColors.deepOrange800),
         brown: new TagColor(MaterialColors.brown900, MaterialColors.brown800),
         blueGrey: new TagColor(MaterialColors.blueGrey900, MaterialColors.blueGrey800),
-    }
+    },
 };

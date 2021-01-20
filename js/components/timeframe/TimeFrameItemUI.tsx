@@ -12,6 +12,7 @@ import Notification from 'ii-react-native-android-local-notification'
 
 interface Props extends TimeFrameData {
     style: ViewStyle;
+    sendMessage?: (message: String) => void;
 }
 
 interface State {
@@ -23,7 +24,6 @@ interface State {
 }
 
 export class TimeFrameItemUI extends React.Component<Props, State> {
-
 
     height = 0;
     timeFrame = this.props as TimeFrameData
@@ -43,16 +43,12 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
         };
 
         Notification.getIDs().then((it: Number[]) => {
-            // console.log(`${it} ${this.props.getStartTimeId()} ${this.props.getRestTimeId()}`)
             let startFocus = it.find((id) =>
                 id === this.props.getStartTimeId()
             )
             let startRest = it.find((id) =>
                 id === this.props.getRestTimeId()
             )
-
-            // console.log(`condition ${startFocus} ${startRest} ${startFocus !== undefined || startRest !== undefined}`)
-
             this.setState({hasAlarm: startFocus !== undefined || startRest !== undefined})
             this.alarmButtonRef.current?.setActiveState(startFocus !== undefined || startRest !== undefined)
         })
@@ -121,21 +117,28 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
     toggleAlarm = (isActive: boolean) => {
         const it = this.props as TimeFrameData
 
+        if (it.isPassed()) {
+            this.props.sendMessage?.call(this, "Can not change alarm state for passed time frames!")
+
+            setTimeout(() => {
+                this.alarmButtonRef.current?.setActiveState(!isActive)
+            }, 100)
+
+            // return
+        }
+
         if (isActive) {
-            console.log(it.getStartTimeId())
-            console.log(it.getRestTimeId())
             Notification.create({
                 id: it.getStartTimeId(),
                 subject: `Focus Session Started`,
                 message: `${it.getTitle()} ${it.getTimeRangeFormatted()}`,
                 bigText: `${it.getTitle()} ${it.getTimeRangeFormatted()}\n${it.getTodos()}`,
                 smallIcon: 'notification_icon',
-                autoClear: true,
+                color: AppColors.focusColor,
                 sendAt: it.startDate.toDate(),
-                channelId: "timer-end",
-                channelName: "Timer alert",
-                channelDescription: "An alert thrown when timer finishes",
-                payload: {number: 1, what: true, someAnswer: '42'}
+                channelId: "ftmr-rest",
+                channelName: "Focus Session Alert",
+                channelDescription: "An alert thrown when rest session is about to start",
             });
 
             Notification.create({
@@ -144,12 +147,11 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
                 message: `Next: ${it.getTitle()} ${it.getTimeRangeFormatted()}`,
                 bigText: `${it.getTitle()} ${it.getTimeRangeFormatted()}\n${it.getTodos()}`,
                 smallIcon: 'notification_icon',
-                autoClear: true,
+                color: AppColors.restColor,
                 sendAt: it.restStartDate().toDate(),
-                channelId: "timer-end",
-                channelName: "Timer alert",
-                channelDescription: "An alert thrown when timer finishes",
-                payload: {number: 1, what: true, someAnswer: '42'}
+                channelId: "ftmr-focus",
+                channelName: "Focus Session Alert",
+                channelDescription: "An alert thrown when focus session is about to start",
             });
         } else {
             Notification.delete(it.getStartTimeId());
@@ -187,7 +189,7 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
 
             <View style={styles.buttonsContainer}>
                 <ToggleButtonUI style={styles.button} icon={"alarm"} ref={this.alarmButtonRef}
-                                initActiveState={this.state.hasAlarm} onToggle={this.toggleAlarm} />
+                                initActiveState={this.state.hasAlarm} onToggle={this.toggleAlarm}/>
 
                 <ToggleButtonUI style={styles.button} icon={"bell-outline"}
                                 initActiveState={false} onToggle={this.doNothing}/>

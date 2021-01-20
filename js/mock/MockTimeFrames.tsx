@@ -69,5 +69,12 @@ export const mockTimeFrames: TimeFrameData[] = []
 for (let i = 0; i < 12; i++) {
     const startDate = moment(new Date(today)).add(i * timeFrameDurationMinutes, "minute");
     const endDate = moment(startDate).add(timeFrameDurationMinutes, "minute")
-    mockTimeFrames.push(new TimeFrameData(i.toString(), [tags[i % tags.length]], startDate, endDate, todos));
+    mockTimeFrames.push(new TimeFrameData(
+        i.toString(),
+        [tags[i % tags.length]],
+        startDate,
+        endDate,
+        todos,
+        true
+    ));
 }

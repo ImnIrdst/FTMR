@@ -12,11 +12,15 @@ export class TagColor {
 
 export const AppColors = {
     primaryColor: MaterialColors.orange500,
+
     background: "black",
     backgroundLight: MaterialColors.grey900,
     backgroundLighter: MaterialColors.grey800,
+
     textColor: MaterialColors.grey100,
     textColorDarker: MaterialColors.grey400,
+
+    darkShade: "rgba(0,0,0,0.6)",
 
     tagColors: {
         red: new TagColor(MaterialColors.red900, MaterialColors.red800),

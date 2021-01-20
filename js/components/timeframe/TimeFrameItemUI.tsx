@@ -58,7 +58,7 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
         return StyleSheet.create({
             grayShade: {
                 position: "absolute",
-                backgroundColor: "rgba(0,0,0,0.6)",
+                backgroundColor: AppColors.darkShade,
                 top: 0,
                 left: 0,
                 right: 0,

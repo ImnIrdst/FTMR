@@ -6,6 +6,8 @@ import {bottomBarHeight} from "../timer/CountDownTimer";
 import {TimeFrameListUI} from "../timeframe/TimeFrameListUI";
 import {AppColors} from "../../resources/Colors";
 import {ToolbarButtonUI} from "../button/ToolbarButtonUI";
+// @ts-ignore
+import Notification from  'ii-react-native-android-local-notification'
 
 export const headerHeight = 156;
 
@@ -26,11 +28,14 @@ export class DayUI extends React.Component<Props, State> {
         currentTime: moment()
     }
 
-
     prevScrollY = 0
     interval = setInterval(() => {
         this.setState({currentTime: moment()})
     }, 1000)
+
+    componentDidMount() {
+        this.setAlarms()
+    }
 
     getHeaderTranslation = () => {
         const diffClamp = Animated.diffClamp(this.props.scrollY, 0, headerHeight);
@@ -92,6 +97,26 @@ export class DayUI extends React.Component<Props, State> {
                 bottomPadding={bottomBarHeight}/>
         </View>
     );
+
+    setAlarms = () => {
+        mockTimeFrames.forEach((it) => {
+            if (it.hasAlarm) {
+                Notification.create({
+                    id: 1337,
+                    subject: 'Ftmr',
+                    message: `Timer finished.`,
+                    smallIcon: 'notification_icon',
+                    autoClear: true,
+                    sendAt: moment().add(5, "seconds").toDate(),
+                    channelId: "timer-end",
+                    channelName: "Timer alert",
+                    channelDescription: "An alert thrown when timer finishes",
+                    payload: { number: 1, what: true, someAnswer: '42' }
+                });
+                return
+            }
+        })
+    }
 }
 
 const styles = StyleSheet.create({

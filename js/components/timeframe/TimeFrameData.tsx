@@ -1,5 +1,5 @@
 import moment from "moment-jalaali";
-import {TagColor} from "../../resources/Colors";
+import {AppColors, TagColor} from "../../resources/Colors";
 
 export const timeFrameDurationMinutes = 120;
 
@@ -24,7 +24,7 @@ export class TodoData {
         this.isChecked = isChecked;
     }
 
-    public toString = () : string => {
+    public toString = (): string => {
         return JSON.stringify(this)
     }
 }
@@ -35,13 +35,15 @@ export class TimeFrameData {
     startDate: moment.Moment;
     endDate: moment.Moment;
     todos: TodoData[];
+    hasAlarm: boolean;
 
-    constructor(key: string, tags: TagData[], startDate: moment.Moment, endDate: moment.Moment, todos: TodoData[]) {
+    constructor(key: string, tags: TagData[], startDate: moment.Moment, endDate: moment.Moment, todos: TodoData[], hasAlarm: boolean) {
         this.key = key;
         this.tags = tags;
         this.startDate = startDate;
         this.endDate = endDate;
         this.todos = todos;
+        this.hasAlarm = hasAlarm;
     }
 
     isCurrentTimeFrame = () => {
@@ -51,6 +53,22 @@ export class TimeFrameData {
     getStartTime = () => this.startDate.format("HH:mm");
     getEndTime = () => this.endDate.format("HH:mm");
     getTimeRange = () => `${this.getStartTime()} - ${this.getEndTime()}`
+
+    getActiveColor = () => {
+        if (this.tags.length > 0) {
+            return this.tags[0].backgroundColor.active
+        } else {
+            return AppColors.backgroundLight
+        }
+    }
+
+    getInactiveColor = () => {
+        if (this.tags.length > 0) {
+            return this.tags[0].backgroundColor.inactive
+        } else {
+            return AppColors.backgroundLighter
+        }
+    }
 
     toString = () => {
         return `${this.key} ${this.getTimeRange()}`

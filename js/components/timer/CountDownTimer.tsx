@@ -1,9 +1,10 @@
 import React from "react";
-import {StyleSheet, Text, ViewStyle, Animated} from "react-native";
+import {StyleSheet, Text, ViewStyle, Animated, Pressable} from "react-native";
 import {AppColors} from "../../resources/Colors";
 import {formatEpoch} from "../../utils/TimeUtils";
 import moment from "moment-jalaali";
 import {mockTimeFrames} from "../../mock/MockTimeFrames";
+import {TimeFrameData} from "../timeframe/TimeFrameData";
 
 interface Props {
     style: ViewStyle;
@@ -14,6 +15,7 @@ interface State {
     startTime: moment.Moment;
     currentTime: moment.Moment;
     endTime: moment.Moment;
+    currentTimeFrame: TimeFrameData;
 }
 
 export const bottomBarHeight = 82;
@@ -37,12 +39,13 @@ export class CountDownTimer extends React.Component<Props, State> {
         return {
             startTime: currentTimeFrame.startDate,
             currentTime: moment().milliseconds(0),
-            endTime: currentTimeFrame.endDate
+            endTime: currentTimeFrame.endDate,
+            currentTimeFrame: currentTimeFrame
         };
     }
 
     componentDidMount() {
-       this.resetTimer()
+        this.resetTimer()
     }
 
     resetTimer = () => {
@@ -76,10 +79,14 @@ export class CountDownTimer extends React.Component<Props, State> {
             style={[
                 this.props.style,
                 styles.container,
-                {transform: [{translateY: this.getScrollTranslation()}]}
+                {transform: [{translateY: this.getScrollTranslation()}]},
+                {backgroundColor: this.state.currentTimeFrame.getActiveColor()},
             ]}>
 
-            <Text style={styles.body}>{formatEpoch(this.state.currentTime, this.state.endTime)}</Text>
+            <Pressable style={styles.darkShade}>
+
+                <Text style={styles.body}>{formatEpoch(this.state.currentTime, this.state.endTime)}</Text>
+            </Pressable>
         </Animated.View>
     );
 }
@@ -88,9 +95,21 @@ const styles = StyleSheet.create({
     container: {
         height: bottomBarHeight,
         flexDirection: "row",
-        backgroundColor: AppColors.backgroundLight,
         borderTopLeftRadius: 64,
         borderTopRightRadius: 64,
+        marginBottom: -2,
+        borderWidth: 1,
+        borderColor: AppColors.backgroundLight,
+    },
+    darkShade: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: AppColors.darkShade,
+        borderTopLeftRadius: 64,
+        borderTopRightRadius: 64
     },
     body: {
         textAlignVertical: "center",
@@ -99,7 +118,7 @@ const styles = StyleSheet.create({
         padding: 16,
         fontSize: 32,
         fontWeight: "normal",
-        color: "#eee",
+        color: AppColors.textColor,
     },
     button: {
         position: "absolute",

@@ -50,17 +50,17 @@ todosWithoutKey.forEach((element, index) => {
 });
 
 const tags: TagData[] = [
-    {title: "red", backgroundColor: AppColors.tagColors.red},
-    {title: "pink", backgroundColor: AppColors.tagColors.pink},
-    {title: "purple", backgroundColor: AppColors.tagColors.purple},
-    {title: "lightBlue", backgroundColor: AppColors.tagColors.lightBlue},
-    {title: "teal", backgroundColor: AppColors.tagColors.teal},
-    {title: "green", backgroundColor: AppColors.tagColors.green},
-    {title: "lime", backgroundColor: AppColors.tagColors.lime},
-    {title: "amber", backgroundColor: AppColors.tagColors.amber},
-    {title: "deepOrange", backgroundColor: AppColors.tagColors.deepOrange},
-    {title: "brown", backgroundColor: AppColors.tagColors.brown},
-    {title: "blueGrey", backgroundColor: AppColors.tagColors.blueGrey},
+    {title: "Red", backgroundColor: AppColors.tagColors.red},
+    {title: "Pink", backgroundColor: AppColors.tagColors.pink},
+    {title: "Purple", backgroundColor: AppColors.tagColors.purple},
+    {title: "LightBlue", backgroundColor: AppColors.tagColors.lightBlue},
+    {title: "Teal", backgroundColor: AppColors.tagColors.teal},
+    {title: "Green", backgroundColor: AppColors.tagColors.green},
+    {title: "Lime", backgroundColor: AppColors.tagColors.lime},
+    {title: "Amber", backgroundColor: AppColors.tagColors.amber},
+    {title: "DeepOrange", backgroundColor: AppColors.tagColors.deepOrange},
+    {title: "Brown", backgroundColor: AppColors.tagColors.brown},
+    {title: "BlueGrey", backgroundColor: AppColors.tagColors.blueGrey},
 ]
 
 

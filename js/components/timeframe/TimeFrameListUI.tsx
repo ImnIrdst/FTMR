@@ -64,6 +64,8 @@ export class TimeFrameListUI extends React.Component<Props> {
             return
         }
 
+        this.setState({scrollViewAnimatedEvent: undefined})
+
         let sum = 0;
         for (let i = 0; i < this.getTimeFrames().length; i++) {
 

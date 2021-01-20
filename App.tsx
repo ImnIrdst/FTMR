@@ -1,4 +1,4 @@
-import React from "react";
+import React, {createRef} from "react";
 import Constants from "expo-constants";
 import {StatusBar} from "expo-status-bar";
 import {SafeAreaView, StyleSheet, Animated} from "react-native";
@@ -7,6 +7,7 @@ import {DayUI} from "./js/components/day/DayUI";
 
 export default class App extends React.Component {
     scrollY = new Animated.Value(0);
+    dayUIRef = createRef<DayUI>()
 
     componentDidMount() {
         this.scrollY = new Animated.Value(0);
@@ -16,13 +17,18 @@ export default class App extends React.Component {
         <SafeAreaView style={styles.container}>
             <StatusBar style="light" backgroundColor="black"/>
 
-            <DayUI style={styles.dayContainer} scrollY={this.scrollY}/>
+            <DayUI style={styles.dayContainer} scrollY={this.scrollY} ref={this.dayUIRef}/>
 
             <CountDownTimer
+                goToCurrent={this.goToCurrent}
                 style={styles.timerContainer}
                 scrollY={this.scrollY}/>
         </SafeAreaView>
     );
+
+    goToCurrent = () => {
+        this.dayUIRef.current?.goToCurrent()
+    }
 }
 
 const styles = StyleSheet.create({

@@ -1,6 +1,6 @@
 import React, {createRef} from "react";
 import moment from "moment-jalaali";
-import {StyleSheet, View, Text, Animated, ViewStyle, TouchableHighlight} from "react-native";
+import {StyleSheet, View, Text, Animated, ViewStyle} from "react-native";
 import {mockTimeFrames} from "../../mock/MockTimeFrames";
 import {bottomBarHeight} from "../timer/CountDownTimer";
 import {TimeFrameListUI} from "../timeframe/TimeFrameListUI";
@@ -9,7 +9,7 @@ import {ToolbarButtonUI} from "../button/ToolbarButtonUI";
 // @ts-ignore
 import Notification from  'ii-react-native-android-local-notification'
 
-export const headerHeight = 156;
+export const headerHeight = 128;
 
 interface Props {
     style: ViewStyle;
@@ -27,11 +27,6 @@ export class DayUI extends React.Component<Props, State> {
     state = {
         currentTime: moment()
     }
-
-    prevScrollY = 0
-    interval = setInterval(() => {
-        this.setState({currentTime: moment()})
-    }, 1000)
 
     componentDidMount() {
         this.setAlarms()
@@ -56,22 +51,8 @@ export class DayUI extends React.Component<Props, State> {
     onNextDayPress = () => {
     };
 
-    onGoToTodayClicked = () => {
+    goToCurrent = () => {
         this.listRef.current?.forceScrollToToday()
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval)
-    }
-
-    shouldComponentUpdate(nextProps: Readonly<Props>, nextState: Readonly<State>, nextContext: any): boolean {
-        const curScrollY = Number.parseInt(JSON.stringify(nextProps.scrollY))
-
-        let shouldUpdate = curScrollY === this.prevScrollY
-
-        this.prevScrollY = curScrollY
-
-        return shouldUpdate
     }
 
     render = () => (
@@ -81,9 +62,6 @@ export class DayUI extends React.Component<Props, State> {
                 <View style={styles.dateContainer}>
                     <Text style={styles.gregorianDate}>{this.getGregorianDate()}</Text>
                     <Text style={styles.jalaaliDate}>{this.getJalaaliDate()}</Text>
-                    <TouchableHighlight onPress={this.onGoToTodayClicked}>
-                        <Text style={styles.todayButton}>{this.state.currentTime.format("HH:mm:ss")}</Text>
-                    </TouchableHighlight>
                 </View>
                 <ToolbarButtonUI style={styles.headerIcons} icon={"chevron-right"} onPress={this.onNextDayPress}/>
             </Animated.View>
@@ -150,17 +128,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: AppColors.textColor,
         textAlign: "center",
-    },
-    todayButton: {
-        fontSize: 16,
-        fontWeight: "bold",
-        color: AppColors.textColor,
-        textAlign: "center",
-        borderWidth: 2,
-        margin: 16,
-        padding: 8,
-        borderRadius: 16,
-        borderColor: AppColors.textColor
     },
     headerIcons: {},
     todosContainer: {

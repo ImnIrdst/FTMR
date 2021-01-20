@@ -9,6 +9,7 @@ import {TimeFrameData} from "../timeframe/TimeFrameData";
 interface Props {
     style: ViewStyle;
     scrollY: Animated.Value;
+    goToCurrent: () => void;
 }
 
 interface State {
@@ -18,11 +19,12 @@ interface State {
     currentTimeFrame: TimeFrameData;
 }
 
-export const bottomBarHeight = 82;
+export const bottomBarHeight = 92;
 
 export class CountDownTimer extends React.Component<Props, State> {
     interval: any;
     duration = 5;
+    prevScrollY = 0;
 
     constructor(props: Props) {
         super(props);
@@ -47,6 +49,17 @@ export class CountDownTimer extends React.Component<Props, State> {
     componentDidMount() {
         this.resetTimer()
     }
+
+    shouldComponentUpdate(nextProps: Readonly<Props>, nextState: Readonly<State>, nextContext: any): boolean {
+        const curScrollY = Number.parseInt(JSON.stringify(nextProps.scrollY))
+
+        let shouldUpdate = curScrollY === this.prevScrollY
+
+        this.prevScrollY = curScrollY
+
+        return shouldUpdate
+    }
+
 
     resetTimer = () => {
         const initState = this.initState()
@@ -83,9 +96,9 @@ export class CountDownTimer extends React.Component<Props, State> {
                 {backgroundColor: this.state.currentTimeFrame.getActiveColor()},
             ]}>
 
-            <Pressable style={styles.darkShade}>
-
+            <Pressable style={styles.darkShade} onPress={this.props.goToCurrent}>
                 <Text style={styles.body}>{formatEpoch(this.state.currentTime, this.state.endTime)}</Text>
+                <Text style={styles.timeFrameInfo}>{`${this.state.currentTimeFrame.getTitle()}: ${this.state.currentTimeFrame.getTimeRange()}, ${moment().format("HH:mm:ss")}`}</Text>
             </Pressable>
         </Animated.View>
     );
@@ -115,10 +128,19 @@ const styles = StyleSheet.create({
         textAlignVertical: "center",
         textAlign: "center",
         flex: 1,
-        padding: 16,
+        paddingTop: 16,
         fontSize: 32,
         fontWeight: "normal",
         color: AppColors.textColor,
+    },
+    timeFrameInfo: {
+        textAlignVertical: "center",
+        textAlign: "center",
+        flex: 1,
+        fontSize: 16,
+        fontWeight: "bold",
+        color: AppColors.textColor,
+        paddingBottom: 8
     },
     button: {
         position: "absolute",

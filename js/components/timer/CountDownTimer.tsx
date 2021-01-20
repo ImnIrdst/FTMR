@@ -1,12 +1,9 @@
 import React from "react";
 import {StyleSheet, Text, ViewStyle, Animated} from "react-native";
-import {IconButton} from "react-native-paper";
 import {AppColors} from "../../resources/Colors";
 import {formatEpoch} from "../../utils/TimeUtils";
 import moment from "moment-jalaali";
-// @ts-ignore
-import Notification from  'ii-react-native-android-local-notification'
-
+import {mockTimeFrames} from "../../mock/MockTimeFrames";
 
 interface Props {
     style: ViewStyle;
@@ -32,53 +29,45 @@ export class CountDownTimer extends React.Component<Props, State> {
     }
 
     initState = () => {
+        const currentTimeFrame = mockTimeFrames.find((it) => it.isCurrentTimeFrame())
+        if (currentTimeFrame === undefined) {
+            throw Error("Can not find current time frame")
+        }
+
         return {
-            startTime: moment().milliseconds(0), // TODO: read this from storage
+            startTime: currentTimeFrame.startDate,
             currentTime: moment().milliseconds(0),
-            endTime: moment().add(this.duration, "seconds").milliseconds(0), // TODO: read this from storage
+            endTime: currentTimeFrame.endDate
         };
     }
 
-    resetState = () => {
-        this.setState(this.initState())
+    componentDidMount() {
+       this.resetTimer()
     }
 
-    getScrollTranslation = () => Animated.diffClamp(this.props.scrollY, 0, bottomBarHeight + bottomBarHeight / 2);
+    resetTimer = () => {
+        const initState = this.initState()
+        this.setState(initState)
 
-    startTimer = () => {
-        this.resetState()
         clearInterval(this.interval);
-
-        Notification.create({
-            id: 1337,
-            subject: 'Ftmr',
-            message: `Timer finished.`,
-            smallIcon: 'notification_icon',
-            autoClear: true,
-            delay: this.duration * 1000,
-            channelId: "timer-end",
-            channelName: "Timer alert",
-            channelDescription: "An alert thrown when timer finishes",
-            payload: { number: 1, what: true, someAnswer: '42' }
-        });
-
         this.interval = setInterval(() => {
             const currentTime = moment().milliseconds(0)
 
             if (moment(this.state.endTime).diff(currentTime, "seconds") < 0) {
-                this.clearTimer();
+                this.resetTimer();
             } else {
                 this.setState({currentTime});
             }
         }, 1000);
-    };
+    }
+
+    getScrollTranslation = () => Animated.diffClamp(this.props.scrollY, 0, bottomBarHeight + bottomBarHeight / 2);
 
     componentWillUnmount = () => {
         this.clearTimer();
     };
 
     clearTimer = () => {
-        this.resetState()
         clearInterval(this.interval);
     };
 
@@ -91,15 +80,6 @@ export class CountDownTimer extends React.Component<Props, State> {
             ]}>
 
             <Text style={styles.body}>{formatEpoch(this.state.currentTime, this.state.endTime)}</Text>
-            <IconButton
-                icon={"play"}
-                onPress={this.startTimer}
-                size={42}
-                color={AppColors.backgroundLight}
-                style={styles.button}
-                accessibilityTraits={"TODO"}
-                accessibilityComponentType={"TODO"}
-            />
         </Animated.View>
     );
 }
@@ -108,9 +88,9 @@ const styles = StyleSheet.create({
     container: {
         height: bottomBarHeight,
         flexDirection: "row",
-        borderTopColor: AppColors.backgroundLighter,
-        borderTopWidth: 2,
         backgroundColor: AppColors.backgroundLight,
+        borderTopLeftRadius: 64,
+        borderTopRightRadius: 64,
     },
     body: {
         textAlignVertical: "center",

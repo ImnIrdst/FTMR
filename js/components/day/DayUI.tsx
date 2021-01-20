@@ -6,8 +6,6 @@ import {bottomBarHeight} from "../timer/CountDownTimer";
 import {TimeFrameListUI} from "../timeframe/TimeFrameListUI";
 import {AppColors} from "../../resources/Colors";
 import {ToolbarButtonUI} from "../button/ToolbarButtonUI";
-// @ts-ignore
-import Notification from  'ii-react-native-android-local-notification'
 
 export const headerHeight = 128;
 
@@ -26,10 +24,6 @@ export class DayUI extends React.Component<Props, State> {
 
     state = {
         currentTime: moment()
-    }
-
-    componentDidMount() {
-        this.setAlarms()
     }
 
     getHeaderTranslation = () => {
@@ -75,27 +69,6 @@ export class DayUI extends React.Component<Props, State> {
                 bottomPadding={bottomBarHeight}/>
         </View>
     );
-
-    setAlarms = () => {
-        mockTimeFrames.forEach((it) => {
-            if (it.hasAlarm) {
-                Notification.create({
-                    id: 1337,
-                    subject: `Focus Session Started`,
-                    message: `${it.getTitle()} ${it.getTimeRangeFormatted()}`,
-                    bigText: `${it.getTitle()} ${it.getTimeRangeFormatted()}\n${it.getTodos()}`,
-                    smallIcon: 'notification_icon',
-                    autoClear: true,
-                    sendAt: moment().add(5, "seconds").toDate(),
-                    channelId: "timer-end",
-                    channelName: "Timer alert",
-                    channelDescription: "An alert thrown when timer finishes",
-                    payload: { number: 1, what: true, someAnswer: '42' }
-                });
-                return
-            }
-        })
-    }
 }
 
 const styles = StyleSheet.create({

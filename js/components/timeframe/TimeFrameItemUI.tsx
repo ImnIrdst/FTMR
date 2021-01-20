@@ -1,4 +1,4 @@
-import React from "react";
+import React, {createRef} from "react";
 import {LayoutChangeEvent, Pressable, StyleSheet, Text, View, ViewStyle} from "react-native";
 import {TimeFrameData, TodoData} from "./TimeFrameData";
 import {ToggleButtonUI} from "../button/ToggleButtonUI";
@@ -7,6 +7,8 @@ import {ToolbarButtonUI} from "../button/ToolbarButtonUI";
 import {AppColors} from "../../resources/Colors";
 import {Icon} from "react-native-elements";
 import moment from "moment-jalaali";
+// @ts-ignore
+import Notification from 'ii-react-native-android-local-notification'
 
 interface Props extends TimeFrameData {
     style: ViewStyle;
@@ -16,22 +18,45 @@ interface State {
     isExpanded: boolean;
     isExpandedDoneTodos: boolean;
     todos: TodoData[];
-    indicator: number
+    indicator: number;
+    hasAlarm: boolean;
 }
 
 export class TimeFrameItemUI extends React.Component<Props, State> {
-    isExpanded = () => this.props.isCurrentTimeFrame();
 
-    state = {
-        isExpanded: this.isExpanded(),
-        isExpandedDoneTodos: false,
-        todos: this.props.todos,
-        indicator: 0,
-    };
 
     height = 0;
-
     timeFrame = this.props as TimeFrameData
+    alarmButtonRef = createRef<ToggleButtonUI>()
+    isExpanded = () => this.props.isCurrentTimeFrame();
+
+
+    constructor(props: Props) {
+        super(props);
+
+        this.state = {
+            isExpanded: this.isExpanded(),
+            isExpandedDoneTodos: false,
+            todos: this.props.todos,
+            indicator: 0,
+            hasAlarm: this.props.hasAlarm,
+        };
+
+        Notification.getIDs().then((it: Number[]) => {
+            // console.log(`${it} ${this.props.getStartTimeId()} ${this.props.getRestTimeId()}`)
+            let startFocus = it.find((id) =>
+                id === this.props.getStartTimeId()
+            )
+            let startRest = it.find((id) =>
+                id === this.props.getRestTimeId()
+            )
+
+            // console.log(`condition ${startFocus} ${startRest} ${startFocus !== undefined || startRest !== undefined}`)
+
+            this.setState({hasAlarm: startFocus !== undefined || startRest !== undefined})
+            this.alarmButtonRef.current?.setActiveState(startFocus !== undefined || startRest !== undefined)
+        })
+    }
 
     onLayout = (event: LayoutChangeEvent) => {
         this.height = event.nativeEvent.layout.height;
@@ -93,8 +118,54 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
         });
     }
 
+    toggleAlarm = (isActive: boolean) => {
+        const it = this.props as TimeFrameData
+
+        if (isActive) {
+            console.log(it.getStartTimeId())
+            console.log(it.getRestTimeId())
+            Notification.create({
+                id: it.getStartTimeId(),
+                subject: `Focus Session Started`,
+                message: `${it.getTitle()} ${it.getTimeRangeFormatted()}`,
+                bigText: `${it.getTitle()} ${it.getTimeRangeFormatted()}\n${it.getTodos()}`,
+                smallIcon: 'notification_icon',
+                autoClear: true,
+                sendAt: it.startDate.toDate(),
+                channelId: "timer-end",
+                channelName: "Timer alert",
+                channelDescription: "An alert thrown when timer finishes",
+                payload: {number: 1, what: true, someAnswer: '42'}
+            });
+
+            Notification.create({
+                id: it.getRestTimeId(),
+                subject: `Rest Session Started`,
+                message: `Next: ${it.getTitle()} ${it.getTimeRangeFormatted()}`,
+                bigText: `${it.getTitle()} ${it.getTimeRangeFormatted()}\n${it.getTodos()}`,
+                smallIcon: 'notification_icon',
+                autoClear: true,
+                sendAt: it.restStartDate().toDate(),
+                channelId: "timer-end",
+                channelName: "Timer alert",
+                channelDescription: "An alert thrown when timer finishes",
+                payload: {number: 1, what: true, someAnswer: '42'}
+            });
+        } else {
+            Notification.delete(it.getStartTimeId());
+            Notification.delete(it.getRestTimeId());
+        }
+
+        Notification.getIDs().then((it: any) => {
+            console.log(it)
+        })
+    }
+
     doNothing = () => {
         console.log("Toggle nothing!");
+        Notification.getIDs().then((it: any) => {
+            console.log(it)
+        })
     };
 
     render = () => (
@@ -115,13 +186,26 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
             {this.state.isExpanded && this.renderTaskDetails()}
 
             <View style={styles.buttonsContainer}>
-                <ToggleButtonUI style={styles.button} icon={"alarm"} onToggle={this.doNothing}/>
-                <ToggleButtonUI style={styles.button} icon={"bell-outline"} onToggle={this.doNothing}/>
-                <ToggleButtonUI style={styles.button} icon={"tag-multiple-outline"} onToggle={this.doNothing}/>
-                <ToggleButtonUI style={styles.button} icon={"pencil-outline"} onToggle={this.doNothing}/>
-                <ToggleButtonUI style={styles.button} icon={"alert-octagon-outline"} onToggle={this.doNothing}/>
-                <ToggleButtonUI style={styles.button} icon={"arrow-collapse-vertical"} onToggle={this.doNothing}/>
-                <ToggleButtonUI style={styles.button} icon={"arrow-expand-vertical"} onToggle={this.doNothing}/>
+                <ToggleButtonUI style={styles.button} icon={"alarm"} ref={this.alarmButtonRef}
+                                initActiveState={this.state.hasAlarm} onToggle={this.toggleAlarm} />
+
+                <ToggleButtonUI style={styles.button} icon={"bell-outline"}
+                                initActiveState={false} onToggle={this.doNothing}/>
+
+                <ToggleButtonUI style={styles.button} icon={"tag-multiple-outline"}
+                                initActiveState={false} onToggle={this.doNothing}/>
+
+                <ToggleButtonUI style={styles.button} icon={"pencil-outline"}
+                                initActiveState={false} onToggle={this.doNothing}/>
+
+                <ToggleButtonUI style={styles.button} icon={"alert-octagon-outline"}
+                                initActiveState={false} onToggle={this.doNothing}/>
+
+                <ToggleButtonUI style={styles.button} icon={"arrow-collapse-vertical"}
+                                initActiveState={false} onToggle={this.doNothing}/>
+
+                <ToggleButtonUI style={styles.button} icon={"arrow-expand-vertical"}
+                                initActiveState={false} onToggle={this.doNothing}/>
             </View>
             <View style={this.getCardBackgroundPassed()}/>
         </View>

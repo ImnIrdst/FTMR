@@ -12,6 +12,7 @@ today.getTimezoneOffset();
 today.setHours(0);
 today.setMinutes(0);
 today.setSeconds(0);
+today.setMilliseconds(0);
 today.toLocaleString();
 
 const todos: TodoData[] = []
@@ -75,6 +76,6 @@ for (let i = 0; i < 12; i++) {
         startDate,
         endDate,
         todos,
-        true
+        false
     ));
 }

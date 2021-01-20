@@ -5,6 +5,7 @@ import { Colors, IconButton } from "react-native-paper";
 interface Props {
     style: ViewStyle;
     icon: string;
+    initActiveState: boolean;
     onToggle: (isActive: boolean) => void;
 }
 
@@ -14,7 +15,7 @@ interface State {
 
 export class ToggleButtonUI extends React.Component<Props, State> {
     state = {
-        isActive: false,
+        isActive: this.props.initActiveState,
     };
 
     toggle = () => {
@@ -23,6 +24,10 @@ export class ToggleButtonUI extends React.Component<Props, State> {
             return { isActive: !prevState.isActive };
         });
     };
+
+    setActiveState = (isActive: boolean) => {
+        this.setState({isActive})
+    }
 
     getStateStyle = () => (this.state.isActive ? styles.activeState : styles.deActiveState);
 

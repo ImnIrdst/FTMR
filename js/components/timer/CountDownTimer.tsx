@@ -38,6 +38,7 @@ export class CountDownTimer extends React.Component<Props, State> {
         if (currentTimeFrame === undefined) {
             throw Error("Can not find current time frame")
         }
+
         const nextTimeFrame = mockTimeFrames.find((it) => compareTimeFrames(it, currentTimeFrame) > 0)
 
         return {

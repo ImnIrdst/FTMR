@@ -38,7 +38,8 @@ export class TimeFrameData {
     todos: TodoData[];
     hasAlarm: boolean;
 
-    focusEndDate = () => moment(this.startDate).subtract(restDurationMinutes, "minutes")
+    focusEndDate = () => moment(this.endDate).subtract(restDurationMinutes, "minutes")
+    restStartDate = () => moment(this.startDate).subtract(restDurationMinutes, "minutes")
 
     constructor(key: string, tags: TagData[], startDate: moment.Moment, endDate: moment.Moment, todos: TodoData[], hasAlarm: boolean) {
         this.key = key;
@@ -66,6 +67,9 @@ export class TimeFrameData {
 
     getTitle = () => this.tags.map((it) => it.title).join(", ")
     getTodos = () => this.todos.filter(it => !it.isChecked).map((it) => "- " + it.text).join("\n")
+
+    getStartTimeId = () => this.startDate.valueOf() % 1e9 + 7
+    getRestTimeId = () => this.restStartDate().valueOf() % 1e9 + 7
 
     getActiveColor = () => {
         if (this.tags.length > 0) {

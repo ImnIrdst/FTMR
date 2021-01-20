@@ -82,8 +82,8 @@ export class DayUI extends React.Component<Props, State> {
                 Notification.create({
                     id: 1337,
                     subject: `Focus Session Started`,
-                    message: `${it.getTitle()} ${it.getTimeRange()}`,
-                    bigText: `${it.getTitle()} ${it.getTimeRange()}\n${it.getTodos()}`,
+                    message: `${it.getTitle()} ${it.getTimeRangeFormatted()}`,
+                    bigText: `${it.getTitle()} ${it.getTimeRangeFormatted()}\n${it.getTodos()}`,
                     smallIcon: 'notification_icon',
                     autoClear: true,
                     sendAt: moment().add(5, "seconds").toDate(),

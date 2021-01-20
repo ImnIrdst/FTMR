@@ -79,7 +79,7 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
 
     getDoneTodos = () => this.props.todos.filter((todo) => todo.isChecked);
     getUndoneTodos = () => this.props.todos.filter((todo) => !todo.isChecked);
-    getTimeRange = () => this.props.getStartTime() + " - " + this.props.getEndTime();
+    getTimeRange = () => this.props.getStartTimeFormatted() + " - " + this.props.getEndTimeFormatted();
 
     toggleExpandState = () => {
         this.setState((prevState) => {

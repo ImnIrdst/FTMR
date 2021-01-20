@@ -4,7 +4,7 @@ import {AppColors} from "../../resources/Colors";
 import {formatEpoch} from "../../utils/TimeUtils";
 import moment from "moment-jalaali";
 import {mockTimeFrames} from "../../mock/MockTimeFrames";
-import {TimeFrameData} from "../timeframe/TimeFrameData";
+import {compareTimeFrames, TimeFrameData} from "../timeframe/TimeFrameData";
 
 interface Props {
     style: ViewStyle;
@@ -17,6 +17,7 @@ interface State {
     currentTime: moment.Moment;
     endTime: moment.Moment;
     currentTimeFrame: TimeFrameData;
+    nextTimeFrame: TimeFrameData | undefined;
 }
 
 export const bottomBarHeight = 92;
@@ -37,12 +38,14 @@ export class CountDownTimer extends React.Component<Props, State> {
         if (currentTimeFrame === undefined) {
             throw Error("Can not find current time frame")
         }
+        const nextTimeFrame = mockTimeFrames.find((it) => compareTimeFrames(it, currentTimeFrame) > 0)
 
         return {
             startTime: currentTimeFrame.startDate,
             currentTime: moment().milliseconds(0),
             endTime: currentTimeFrame.endDate,
-            currentTimeFrame: currentTimeFrame
+            currentTimeFrame: currentTimeFrame,
+            nextTimeFrame: nextTimeFrame
         };
     }
 
@@ -87,18 +90,36 @@ export class CountDownTimer extends React.Component<Props, State> {
         clearInterval(this.interval);
     };
 
+    getTimeFrameInfo = () => {
+        const it = this.state.currentTimeFrame
+        if (it.isInFocusRange()) {
+            return `Focus: Current ${this.state.currentTimeFrame.getTitle()}, ${this.state.currentTimeFrame.getFocusTimeRangeFormatted()}`
+        } else {
+            return `Rest: Next ${this.state.nextTimeFrame?.getTitle()}, ${this.state.currentTimeFrame.getRestTimeRangeFormatted()}`
+        }
+    }
+
+    getBackgroundColor = () => {
+        const it = this.state.currentTimeFrame
+        if (it.isInFocusRange()) {
+            return it.getActiveColor()
+        } else {
+            return AppColors.primaryColor
+        }
+    }
+
     render = () => (
         <Animated.View
             style={[
                 this.props.style,
                 styles.container,
                 {transform: [{translateY: this.getScrollTranslation()}]},
-                {backgroundColor: this.state.currentTimeFrame.getActiveColor()},
+                {backgroundColor: this.getBackgroundColor()},
             ]}>
 
             <Pressable style={styles.darkShade} onPress={this.props.goToCurrent}>
                 <Text style={styles.body}>{formatEpoch(this.state.currentTime, this.state.endTime)}</Text>
-                <Text style={styles.timeFrameInfo}>{`${this.state.currentTimeFrame.getTitle()}: ${this.state.currentTimeFrame.getTimeRange()}, ${moment().format("HH:mm:ss")}`}</Text>
+                <Text style={styles.timeFrameInfo}>{`${this.getTimeFrameInfo()}, ${moment().format("HH:mm:ss")}`}</Text>
             </Pressable>
         </Animated.View>
     );

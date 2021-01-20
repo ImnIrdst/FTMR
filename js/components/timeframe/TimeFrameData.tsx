@@ -2,6 +2,7 @@ import moment from "moment-jalaali";
 import {AppColors, TagColor} from "../../resources/Colors";
 
 export const timeFrameDurationMinutes = 120;
+export const restDurationMinutes = 56;
 
 export class TagData {
     title: string;
@@ -37,6 +38,8 @@ export class TimeFrameData {
     todos: TodoData[];
     hasAlarm: boolean;
 
+    focusEndDate = () => moment(this.startDate).subtract(restDurationMinutes, "minutes")
+
     constructor(key: string, tags: TagData[], startDate: moment.Moment, endDate: moment.Moment, todos: TodoData[], hasAlarm: boolean) {
         this.key = key;
         this.tags = tags;
@@ -50,9 +53,16 @@ export class TimeFrameData {
         const diff = moment().diff(this.startDate, "minute");
         return 0 <= diff && diff < moment(this.endDate).diff(this.startDate, "minute");
     };
-    getStartTime = () => this.startDate.format("HH:mm");
-    getEndTime = () => this.endDate.format("HH:mm");
-    getTimeRange = () => `${this.getStartTime()} - ${this.getEndTime()}`
+    isInFocusRange = () => {
+        const diff = moment().diff(this.startDate, "minute");
+        return 0 <= diff && diff < moment(this.endDate).subtract(restDurationMinutes, "minutes").diff(this.startDate, "minute");
+    };
+    getStartTimeFormatted = () => this.startDate.format("HH:mm");
+    getEndTimeFormatted = () => this.endDate.format("HH:mm");
+    getFocusEndTimeFormatted = () => this.focusEndDate().format("HH:mm");
+    getTimeRangeFormatted = () => `${this.getStartTimeFormatted()} - ${this.getEndTimeFormatted()}`
+    getFocusTimeRangeFormatted = () => `${this.getStartTimeFormatted()} - ${this.getFocusEndTimeFormatted()}`
+    getRestTimeRangeFormatted = () => `${this.getFocusEndTimeFormatted()} - ${this.getEndTimeFormatted()}`
 
     getTitle = () => this.tags.map((it) => it.title).join(", ")
     getTodos = () => this.todos.filter(it => !it.isChecked).map((it) => "- " + it.text).join("\n")
@@ -74,7 +84,7 @@ export class TimeFrameData {
     }
 
     toString = () => {
-        return `${this.key} ${this.getTimeRange()}`
+        return `${this.key} ${this.getTitle()} ${this.getTimeRangeFormatted()}`
     }
 }
 

@@ -54,6 +54,9 @@ export class TimeFrameData {
     getEndTime = () => this.endDate.format("HH:mm");
     getTimeRange = () => `${this.getStartTime()} - ${this.getEndTime()}`
 
+    getTitle = () => this.tags.map((it) => it.title).join(", ")
+    getTodos = () => this.todos.filter(it => !it.isChecked).map((it) => "- " + it.text).join("\n")
+
     getActiveColor = () => {
         if (this.tags.length > 0) {
             return this.tags[0].backgroundColor.active

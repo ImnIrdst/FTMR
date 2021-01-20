@@ -103,8 +103,9 @@ export class DayUI extends React.Component<Props, State> {
             if (it.hasAlarm) {
                 Notification.create({
                     id: 1337,
-                    subject: 'Ftmr',
-                    message: `Timer finished.`,
+                    subject: `Focus Session Started`,
+                    message: `${it.getTitle()} ${it.getTimeRange()}`,
+                    bigText: `${it.getTitle()} ${it.getTimeRange()}\n${it.getTodos()}`,
                     smallIcon: 'notification_icon',
                     autoClear: true,
                     sendAt: moment().add(5, "seconds").toDate(),

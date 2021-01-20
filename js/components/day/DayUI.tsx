@@ -56,7 +56,7 @@ export class DayUI extends React.Component<Props, State> {
         this.setState({snackbarMessage: message})
     };
 
-    onDismissSnackBar = () => {
+    dismissSnackBar = () => {
         this.setState({snackbarMessage: ""})
     }
 
@@ -73,17 +73,15 @@ export class DayUI extends React.Component<Props, State> {
 
             {/*// @ts-ignore*/}
             <Snackbar visible={this.state.snackbarMessage.length !== 0}
-                      duration={Snackbar.DURATION_SHORT} onDismiss={this.onDismissSnackBar} theme={undefined} style={{
-                flex: 1,
-                backgroundColor: AppColors.backgroundLight,
-                justifyContent: "center",
-                alignContent: "center",
-                alignItems: "center",
-                marginHorizontal: 32,
-                marginBottom: bottomBarHeight + 16,
-                // textAlign: "center",
-                // textAlignVertical: "center"
-            }}>{this.state.snackbarMessage}</Snackbar>
+                      duration={Snackbar.DURATION_LONG}
+                      onDismiss={this.dismissSnackBar}
+                      theme={{colors: {accent: AppColors.primaryColor}}}
+                      action={{
+                          label: "Dismiss",
+                          accessibilityLabel: "dismiss",
+                          onPress: this.dismissSnackBar,
+                      }}
+                      style={styles.snackbar}>{this.state.snackbarMessage}</Snackbar>
 
             <TimeFrameListUI
                 sendMessage={this.showMessage}
@@ -133,4 +131,15 @@ const styles = StyleSheet.create({
         flex: 1,
         alignSelf: "stretch",
     },
+    snackbar: {
+        flex: 1,
+        zIndex: 100,
+        backgroundColor: AppColors.backgroundLight,
+        justifyContent: "center",
+        alignContent: "center",
+        alignItems: "center",
+        marginHorizontal: 32,
+        marginBottom: bottomBarHeight + 16,
+    },
+
 });

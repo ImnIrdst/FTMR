@@ -2,7 +2,7 @@ import moment from "moment-jalaali";
 import {AppColors, TagColor} from "../../resources/Colors";
 
 export const timeFrameDurationMinutes = 120;
-export const restDurationMinutes = 56;
+export const restDurationMinutes = 5;
 
 export class TagData {
     title: string;

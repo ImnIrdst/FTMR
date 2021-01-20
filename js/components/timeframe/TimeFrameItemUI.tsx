@@ -124,7 +124,7 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
                 this.alarmButtonRef.current?.setActiveState(!isActive)
             }, 100)
 
-            // return
+            return
         }
 
         if (isActive) {

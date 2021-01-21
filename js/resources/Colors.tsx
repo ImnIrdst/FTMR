@@ -32,6 +32,7 @@ export const AppColors = {
         lightBlue: new TagColor(MaterialColors.lightBlue900, MaterialColors.lightBlue800),
         teal: new TagColor(MaterialColors.teal900, MaterialColors.teal800),
         green: new TagColor(MaterialColors.green900, MaterialColors.green800),
+        lightGreen: new TagColor(MaterialColors.lightGreen900, MaterialColors.lightGreen800),
         lime: new TagColor(MaterialColors.lime900, MaterialColors.lime800),
         amber: new TagColor(MaterialColors.amber900, MaterialColors.amber800),
         deepOrange: new TagColor(MaterialColors.deepOrange900, MaterialColors.deepOrange800),

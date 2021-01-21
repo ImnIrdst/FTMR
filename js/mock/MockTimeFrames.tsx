@@ -57,6 +57,7 @@ const tags: TagData[] = [
     {title: "LightBlue", backgroundColor: AppColors.tagColors.lightBlue},
     {title: "Teal", backgroundColor: AppColors.tagColors.teal},
     {title: "Green", backgroundColor: AppColors.tagColors.green},
+    {title: "LightGreen", backgroundColor: AppColors.tagColors.lightGreen},
     {title: "Lime", backgroundColor: AppColors.tagColors.lime},
     {title: "Amber", backgroundColor: AppColors.tagColors.amber},
     {title: "DeepOrange", backgroundColor: AppColors.tagColors.deepOrange},
@@ -70,12 +71,12 @@ export const mockTimeFrames: TimeFrameData[] = []
 for (let i = 0; i < 12; i++) {
     const startDate = moment(new Date(today)).add(i * timeFrameDurationMinutes, "minute");
     const endDate = moment(startDate).add(timeFrameDurationMinutes, "minute")
-    mockTimeFrames.push(new TimeFrameData(
-        i.toString(),
-        [tags[i % tags.length]],
-        startDate,
-        endDate,
-        todos,
-        false
-    ));
+    mockTimeFrames.push(new TimeFrameData({
+        key: i.toString(),
+        tags: [tags[i % tags.length]],
+        startDate: startDate,
+        endDate: endDate,
+        todos: todos,
+        hasAlarm: false
+    }));
 }

@@ -30,7 +30,16 @@ export class TodoData {
     }
 }
 
-export class TimeFrameData {
+interface TimeFrameDataNamedParams {
+    key: string;
+    tags: TagData[];
+    startDate: moment.Moment;
+    endDate: moment.Moment;
+    todos: TodoData[];
+    hasAlarm: boolean;
+}
+
+export class TimeFrameData implements TimeFrameDataNamedParams {
     key: string;
     tags: TagData[];
     startDate: moment.Moment;
@@ -41,13 +50,13 @@ export class TimeFrameData {
     focusEndDate = () => moment(this.endDate).subtract(restDurationMinutes, "minutes")
     restStartDate = () => moment(this.startDate).subtract(restDurationMinutes, "minutes")
 
-    constructor(key: string, tags: TagData[], startDate: moment.Moment, endDate: moment.Moment, todos: TodoData[], hasAlarm: boolean) {
-        this.key = key;
-        this.tags = tags;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.todos = todos;
-        this.hasAlarm = hasAlarm;
+    constructor(namedParams: TimeFrameDataNamedParams) {
+        this.key = namedParams.key;
+        this.tags = namedParams.tags;
+        this.startDate = namedParams.startDate;
+        this.endDate = namedParams.endDate;
+        this.todos = namedParams.todos;
+        this.hasAlarm = namedParams.hasAlarm;
     }
 
     isCurrentTimeFrame = () => {

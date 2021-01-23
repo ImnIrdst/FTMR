@@ -7,8 +7,7 @@ import {ToolbarButtonUI} from "../button/ToolbarButtonUI";
 import {AppColors} from "../../resources/Colors";
 import {Icon} from "react-native-elements";
 import moment from "moment-jalaali";
-// @ts-ignore
-import Notification from 'ii-react-native-android-local-notification'
+import {notification} from 'ii-react-native-android-local-notification'
 
 interface Props extends TimeFrameData {
     style: ViewStyle;
@@ -23,6 +22,7 @@ interface State {
     hasAlarm: boolean;
 }
 
+// noinspection JSIgnoredPromiseFromCall // TODO handle promises
 export class TimeFrameItemUI extends React.Component<Props, State> {
 
     height = 0;
@@ -41,7 +41,7 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
             hasAlarm: this.props.hasAlarm,
         };
 
-        Notification.getIDs().then((it: Number[]) => {
+        notification.getIDs().then((it: Number[]) => {
             let startFocus = it.find((id) =>
                 id === this.props.getStartTimeId()
             )
@@ -123,11 +123,11 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
                 this.alarmButtonRef.current?.setActiveState(!isActive)
             }, 100)
 
-            return
+            // return
         }
 
         if (isActive) {
-            Notification.create({
+            notification.create({
                 id: it.getStartTimeId(),
                 subject: `Focus Session Started`,
                 message: `${it.getTitle()} ${it.getTimeRangeFormatted()}`,
@@ -140,7 +140,7 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
                 channelDescription: "An alert thrown when rest session is about to start",
             });
 
-            Notification.create({
+            notification.create({
                 id: it.getRestTimeId(),
                 subject: `Rest Session Started`,
                 message: `Next: ${it.getTitle()} ${it.getTimeRangeFormatted()}`,
@@ -153,11 +153,11 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
                 channelDescription: "An alert thrown when focus session is about to start",
             });
         } else {
-            Notification.delete(it.getStartTimeId());
-            Notification.delete(it.getRestTimeId());
+            notification.delete(it.getStartTimeId());
+            notification.delete(it.getRestTimeId());
         }
 
-        Notification.getIDs().then((it: any) => {
+        notification.getIDs().then((it: any) => {
             console.log(it)
         })
     }
@@ -165,7 +165,7 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
     notImplemented = () => {
         this.props.sendMessage?.call(this, "Not implemented!")
 
-        Notification.getIDs().then((it: any) => {
+        notification.getIDs().then((it: any) => {
             console.log(it)
         })
     };

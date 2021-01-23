@@ -162,8 +162,9 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
         })
     }
 
-    doNothing = () => {
-        console.log("Toggle nothing!");
+    notImplemented = () => {
+        this.props.sendMessage?.call(this, "Not implemented!")
+
         Notification.getIDs().then((it: any) => {
             console.log(it)
         })
@@ -191,22 +192,22 @@ export class TimeFrameItemUI extends React.Component<Props, State> {
                                 initActiveState={this.state.hasAlarm} onToggle={this.toggleAlarm}/>
 
                 <ToggleButtonUI style={styles.button} icon={"bell-outline"}
-                                initActiveState={false} onToggle={this.doNothing}/>
+                                initActiveState={false} onToggle={this.notImplemented}/>
 
                 <ToggleButtonUI style={styles.button} icon={"tag-multiple-outline"}
-                                initActiveState={false} onToggle={this.doNothing}/>
+                                initActiveState={false} onToggle={this.notImplemented}/>
 
                 <ToggleButtonUI style={styles.button} icon={"pencil-outline"}
-                                initActiveState={false} onToggle={this.doNothing}/>
+                                initActiveState={false} onToggle={this.notImplemented}/>
 
                 <ToggleButtonUI style={styles.button} icon={"alert-octagon-outline"}
-                                initActiveState={false} onToggle={this.doNothing}/>
+                                initActiveState={false} onToggle={this.notImplemented}/>
 
                 <ToggleButtonUI style={styles.button} icon={"arrow-collapse-vertical"}
-                                initActiveState={false} onToggle={this.doNothing}/>
+                                initActiveState={false} onToggle={this.notImplemented}/>
 
                 <ToggleButtonUI style={styles.button} icon={"arrow-expand-vertical"}
-                                initActiveState={false} onToggle={this.doNothing}/>
+                                initActiveState={false} onToggle={this.notImplemented}/>
             </View>
             <View style={this.getCardBackgroundPassed()}/>
         </View>

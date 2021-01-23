@@ -43,9 +43,11 @@ export class DayUI extends React.Component<Props, State> {
     getJalaaliDate = () => moment().format("jDo jMMMM  jYYYY");
 
     onPrevDayPress = () => {
+        this.showMessage("Not implemented")
     };
 
     onNextDayPress = () => {
+        this.showMessage("Not implemented")
     };
 
     goToCurrent = () => {

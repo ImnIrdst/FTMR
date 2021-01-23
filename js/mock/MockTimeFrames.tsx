@@ -18,6 +18,7 @@ today.toLocaleString();
 const todos: TodoData[] = []
 
 let todosWithoutKey = [
+    {text: "Add not implemented snackbar", isChecked: false},
     {text: "Navigate to tag selection screen", isChecked: false},
     {text: "Add tag manager screen", isChecked: false},
     {text: "Add todos and persist data", isChecked: false},

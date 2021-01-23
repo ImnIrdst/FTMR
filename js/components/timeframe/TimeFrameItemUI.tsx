@@ -26,7 +26,6 @@ interface State {
 export class TimeFrameItemUI extends React.Component<Props, State> {
 
     height = 0;
-    timeFrame = this.props as TimeFrameData
     alarmButtonRef = createRef<ToggleButtonUI>()
     isExpanded = () => this.props.isCurrentTimeFrame();
 

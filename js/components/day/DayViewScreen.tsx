@@ -1,27 +1,26 @@
 import React, {createRef} from "react";
 import moment from "moment-jalaali";
-import {StyleSheet, View, Text, Animated, ViewStyle} from "react-native";
+import {StyleSheet, View, Text, Animated} from "react-native";
 import {mockTimeFrames} from "../../mock/MockTimeFrames";
-import {bottomBarHeight} from "../timer/CountDownTimer";
+import {bottomBarHeight, CountDownTimer} from "../timer/CountDownTimer";
 import {TimeFrameListUI} from "../timeframe/TimeFrameListUI";
 import {AppColors} from "../../resources/Colors";
 import {ToolbarButtonUI} from "../button/ToolbarButtonUI";
 import {Snackbar} from "react-native-paper";
+import Constants from "expo-constants";
 
 export const headerHeight = 128;
 
-interface Props {
-    style: ViewStyle;
-    scrollY: Animated.Value;
-}
+interface Props {}
 
 interface State {
     currentTime: moment.Moment
     snackbarMessage: String,
 }
 
-export class DayUI extends React.Component<Props, State> {
+export class DayViewScreen extends React.Component<Props, State> {
 
+    scrollY = new Animated.Value(0);
     listRef = createRef<TimeFrameListUI>()
 
     state = {
@@ -30,7 +29,7 @@ export class DayUI extends React.Component<Props, State> {
     }
 
     getHeaderTranslation = () => {
-        const diffClamp = Animated.diffClamp(this.props.scrollY, 0, headerHeight);
+        const diffClamp = Animated.diffClamp(this.scrollY, 0, headerHeight);
         return Animated.multiply(-1, diffClamp);
     };
 
@@ -63,7 +62,7 @@ export class DayUI extends React.Component<Props, State> {
     }
 
     render = () => (
-        <View style={[this.props.style, styles.container]}>
+        <View style={[styles.container]}>
             <Animated.View style={[styles.headerContainer, this.getHeaderTranslationStyle()]}>
                 <ToolbarButtonUI style={styles.headerIcons} icon={"chevron-left"} onPress={this.onPrevDayPress}/>
                 <View style={styles.dateContainer}>
@@ -90,9 +89,14 @@ export class DayUI extends React.Component<Props, State> {
                 ref={this.listRef}
                 style={styles.todosContainer}
                 timeFrames={mockTimeFrames}
-                scrollX={this.props.scrollY}
+                scrollX={this.scrollY}
                 topPadding={headerHeight}
                 bottomPadding={bottomBarHeight}/>
+
+            <CountDownTimer
+                goToCurrent={this.goToCurrent}
+                style={styles.timerContainer}
+                scrollY={this.scrollY}/>
         </View>
     );
 }
@@ -101,6 +105,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "black",
+        alignItems: "center",
+        justifyContent: "flex-start",
+        marginTop: Constants.statusBarHeight
     },
     headerContainer: {
         flexDirection: "row",
@@ -143,5 +150,11 @@ const styles = StyleSheet.create({
         marginHorizontal: 32,
         marginBottom: bottomBarHeight + 16,
     },
-
+    timerContainer: {
+        position: "absolute",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 10,
+    },
 });
